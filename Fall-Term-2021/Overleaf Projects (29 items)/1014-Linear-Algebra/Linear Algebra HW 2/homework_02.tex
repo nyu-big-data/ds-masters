@@ -1,0 +1,281 @@
+\documentclass{article}
+% General document formatting
+\usepackage[margin=0.7in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+
+% Related to math
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+
+\title{Homework 2}
+\date{9/18/2021}
+
+\begin{document}
+\maketitle
+
+\textbf{Name}: Giulio Duregon
+
+\break 
+
+
+\section{Problem 2.1:}
+For a linear transformation, a transformation $T$ has to be:
+\begin{itemize}
+    \item Closed under addition $T(A)+T(B) = T(A+B)$
+    \item Closed under multiplication $T(A\times \alpha) = \alpha \times T(A)$
+
+\end{itemize}
+a) $T$, the transformation that sends (x,y) from $\mathbb{R}^2$ to $(x-y)$ in $\mathbb{R}$ \textbf{is a linear transformation}. Let's test the properties stated above. For our examples below, Let $A,B \in \mathbb{R}^2 $ and $A=(1,1)$ and $B=(1,2)$ then:
+\begin{itemize}
+    \item $T(A)=(1-1)=0$, $T(B)=(1-2)=-1$, and $T(A) + T(B)=(0-1)=-1$. Likewise, $(A+B)=(2,3)$ and $T(A+B)=(2-3) =-1$. Therefore, our transformation is closed under addition.
+    \item Let $\alpha =5$, and $B\times alpha = (1,2)\times 5=(5,10)$, and $T(\alpha B)=T(5,10)=(5-10)=-5$. Likewise if we have $\alpha T(B) = 5 * -1 = -5$. Therefore, our transformation is closed under multiplication. 
+    \item If we pass A $(1,1)$ into our linear transformation we have $(1-1)=0$ so our transformation does include the 0 vector.
+\end{itemize}
+\par
+b) $T$ is the transformation that sends $(x,y) \in \mathbb{R}^2$ to $(3x+y,x-xy) \in \mathbb{R}^2$ Let's test the properties stated above. For our examples below, Let $A,B \in \mathbb{R}^2 $ and $A=(1,1)$ and $B=(2,10)$ then:
+\begin{itemize}
+    \item $T(A)=(3(1) + 1, 1 -1)= (4,0)$, $T(B)=(3(2)+10, 2-20)=(16,-18)$, and $T(A) + T(B)=(4+16,0+18)=(20,-18)$. Likewise, $(A+B)=(1+2,1+10)=(3,11)$ and $T(A+B)=(3(3) + 11, 3-3(11)) =(20,-30) \neq (20,-18)$. Therefore, our transformation is not closed under addition, \textbf{and therefore not a linear transformation.}
+\end{itemize}
+\par
+c) $T$ is the transformation that takes in a matrix $A \in \mathbb{R}^{n\times n}$ and outputs the diagonal of the matrix $diag(A) \in \mathbb{R}^{n}$. \textbf{This is a linear transformation} as this is closed under addition and scalar multiplication. Consider two homotethy matrice (matricies that only have entries in their diagonal, this is just an arbitary decision on my part, they can be any two $n\times n$ matrices) A and B where $A = \{ \lambda Id_n \mid \lambda = \alpha\}$ and $B = \{ \lambda Id_n \mid \lambda = \beta\}$. Lets test the properties of matrix T:
+$$T(A) + T(B) = \{ \lambda Id_n \mid \lambda = \alpha + \beta \} = T(A+B) \textbf{ Closed under addition...}$$
+$$T(A\times 10) = \{\lambda Id_n \mid \lambda = 10\times \alpha\} = 10 \times T(A) \textbf{ Closed under multiplication...}$$ \\
+Therefore \textbf{T is a linear transformation}
+
+\par
+d) The homotethy matrix is a matrix that contains $1\times \lambda$ in all of its diagonal entries, and effectively scales the columns of the other matrix by $\lambda$. If $AA^{-1} = I$ with $A^{-1}$ being the inverse matrix of $A$ and $I$ being the $n\times n$ identity matrix, $A^{-1}$ would have all of its diagonal entries set to $1/\lambda$. We must remember than we don't want to achieve the identity matrix, but actually reach $A^{-1}$ with our transformation, so the transformation that sends $A$ to $A^{-1}$ will have entries in the diagonal equal to $1/\lambda^2$.
+\[
+M^{n*n}=
+  \begin{bmatrix}
+    1/\lambda^2 & 0 & 0 & \dots & 0_{1,n} \\
+    0 & 1/\lambda^2 & 0 & \dots & 0 \\
+    0 & 0 & 1/\lambda^2 & \dots & 0 \\
+    0 & 0 & \dots & 1/\lambda^2 & 0 \\
+    0_{n_1} & 0 & 0 & \dots & 1/\lambda^2 \\
+  \end{bmatrix}
+\]
+
+Lets test this transformation and see if it is closed under addition. Say $A = \{ \lambda Id_n \mid \lambda = 2$\} and $B = \{ \lambda Id_n \mid \lambda = 10$\} then $A+B= \{ \lambda Id_n \mid \lambda = 12$\}. If we perform our transformation $T$ to the matrix $A+B$ then we have $T(A+B) = \{ \lambda Id_n \mid \lambda = 1/12^2\}$ However, if we add $T(A) = A = \{ \lambda Id_n \mid \lambda = 1/2^2\}$ and $T(B) = \{ \lambda Id_n \mid \lambda = 1/10^2$\} we can see clearly that any entry in the diagonal of $T(A) + T(B) = \frac{1}{2^2} + \frac{1}{10^2} \neq T(A+B) = \frac{1}{12^2}$
+
+We can quickly see that this is not closed under addition, and therefore $\textbf{T is not a linear transformation}$. 
+
+\break
+\section{Problem 2.2}
+The span of the matrix A is all the linear combination of any scalar $\alpha \in \mathbb{R}$ with the vectors (the columns of $A$) $\{c_1,c_2,\dots,c_n\}$. That is:
+\begin{equation}
+    Span(c_1, c_2,\dots,c_n) = \alpha _1c_1 + \alpha _2c_2 + \dots + \alpha _nc_n
+\end{equation}
+We can think about the above as stretching the span of the vectors of the matrix A to every possible point they can reach at once. If the columns span all of $\mathbb{R}^n$ then they can reach every point in $\mathbb{R}^n$. 
+\par
+Likewise, when we discuss $Image(A) = \{Ax \mid x \in \mathbb{R}^n\}$ we can quickly see this is the same thing. $A$ denotes the matrix and $x$ denotes a vector containing all the scalars $\{x_1,x_2,\dots,x_n\}$ that each multiply a unique column $\{c_1,c_2,\dots,c_n\}$ in matrix $A$. Therefore we have:
+\begin{equation}
+    Image(A) = \{Ax \mid x \in \mathbb{R}^n\} = x_1c_1 + x_2c_2 + \dots + x_nc_n
+\end{equation}
+Which, again, is all the possible linear combinations we can produce with scalars $\in \mathbb{R}$ and the vectors $\{c_1,c_2,\dots,c_n\}$ retrieved from the column of $A$. Therefore, the statements $x_1c_1 + x_2c_2 + \dots + x_nc_n$ and $\alpha _1c_1 + \alpha _2c_2 + \dots + \alpha _nc_n$ both take all possible linear combinations of the vectors in A. In fact, they are literally the same expression if $\alpha _1,\dots,\alpha _n = x_1,\dots,x_n$. At any rate, $$Image(A) = Span(c_1,\dots,c_n)$$.
+
+\break
+\section{Problem 2.3 Give once over}
+a) Using Gaussian elimination, lets compute $A\vec{x} =0$ and find a basis for $Ker(A)$
+
+\(\qquad \qquad  \begin{pmatrix}
+    1 & 1 & 1 & 0 \\
+    2 & 4 & 4 & 0 \\
+    3 & 7 & k & 0 
+\end{pmatrix} 
+ \) (Set our augmented matrix to 0)
+
+
+\( \qquad  \qquad  \begin{pmatrix}
+    1 & 1 & 1 & 0 \\
+    0 & 1 & 1 & 0 \\
+    3 & 7 & k & 0 
+\end{pmatrix} 
+ \) ($R_2 - 2R_1$ then $\frac{R_2}{2}$)
+ 
+ \( \qquad \qquad \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 1 & 0 \\
+    0 & 7 & k & 0 
+\end{pmatrix} 
+ \) ($R_1 - R_2$ then $R_3 - 3R_1$)
+ 
+  \( \qquad \qquad \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 1 & 0 \\
+    0 & 0 & k-7 & 0 
+\end{pmatrix} 
+ \) (Finally, $R_3-7R_2$)
+ 
+
+ \par
+ 
+We have row reduced our matrix and found that if $k\neq 7$ then our $Ker(A)$ will only have 1 solution (the trivial solution). However, if $k=7$ then $x_3$ is a free variable and the null space will have infinitely many solutions, with a basis vector $\begin{pmatrix}
+{0,-1,1}
+\end{pmatrix}$
+\par
+b) If we had set our augmented column to $\{1,2,3\}$ that is to say $A\vec{x} = \{1,2,3\}$, and we solved the system with the previous steps we used in part a) we would have the following matrix: 
+ 
+  \( \qquad \qquad \begin{pmatrix}
+    1 & 0 & 0 & 1 \\
+    0 & 1 & 1 & 0 \\
+    0 & 0 & k-7 & 0 
+\end{pmatrix} 
+ \) \\
+The first row tells us that $x_1 = 1$ this intuitively makes sense, as the first vector takes the form $\begin{pmatrix}
+1,2,3
+\end{pmatrix}$ so if we scaled that by 1 we already arrive at our solution (if $\vec{x}=(1,0,0)$ then $A\vec{x} = \{1,2,3\}$. We can have either 1 solution $(x_1 =1)$ or infinitely many solutions if $k=7$. This is because is $k=7$ then we have a valid null space ($x_3$ is a free variable), so if we add any vector from the null space (which maps to the 0 vector in the image), it won't change our destination in the Image(A) of \begin{pmatrix}
+1,2,3
+\end{pmatrix}. Our basis for the set of infinite solutions (again this is if $k=7)$ then our $\vec{x} =$ $(1,0,0) + x_3 * (0,-1,1)$
+
+c) If we had set our augmented column to $\{10,1,2017\}$ that is to say $A\vec{x} = \{10,1,2017\}$, and we solved the system with the previous steps we used in part a) we would have the following matrix:
+ 
+  \( \qquad \qquad \begin{pmatrix}
+    1 & 0 & 0 & 19.5 \\
+    0 & 1 & 1 & -9.5\\
+    0 & 0 & k-7 & 2025 
+\end{pmatrix} 
+ \) \\
+ 
+For all values of $k\neq 7$, there will be leading entries in the pivot columns of the matrix. IF that's the case, there will be a single solution for $A\vec{x} = \{10,1,2017\}$ with some $\vec{x} = (x_1,x_2,x_3)$. If $k=7$ the system is inconsistent and $\{10,1,2017\} \notin Image(A)$, as the bottom row will tell us $x_3 \times 0 = 2017$ which does not hold.
+
+\break
+\section{Problem 2.4}
+\begin{equation}
+    P = 
+    \begin{pmatrix}
+    0 & 1 & 0\\
+    1 & 0 & 0 \\
+    0 & 0 & 1 
+    \end{pmatrix},
+    B = 
+    \begin{pmatrix}
+    B_{1,1} & B_{1,2} & B_{1,3}\\
+    B_{2,1} & B_{2,2} & B_{2,3} \\
+    B_{3,1} & B_{3,2} & B_{3,3} 
+    \end{pmatrix}
+\end{equation}
+\\
+
+a) Compute the matrix BP
+\begin{equation}
+    BP = 
+    \begin{pmatrix}
+    0\times B_{1,1} + B_{1,2} + 0\times B_{1,3} & B_{1,1} + 0\times B_{1,2} + 0\times  B_{1,3}  & 0\times B_{1,1} + 0\times B_{1,2} + B_{1,3}\\
+    0 \times B_{2,1} + B_{2,2} + 0\times B_{2,3} & B_{2,1} + 0\times B_{2,2} + 0\times  B_{2,3}  & 0\times B_{2,1} + 0\times B_{2,2} + B_{2,3}\\
+    0 \times B_{3,1} + B_{3,2} + 0\times B_{3,3} & B_{3,1} + 0\times B_{3,2} + 0\times  B_{3,3}  & 0\times B_{3,1} + 0\times B_{3,2} + B_{3,3}
+    \end{pmatrix} 
+    \newline
+    =
+    \begin{pmatrix}
+    B_{1,2} & B_{1,1} & B_{1,3}\\
+    B_{2,2} & B_{2,1} & B_{2,3}\\
+    B_{3,2} & B_{3,1} & B_{3,3}\\
+    \end{pmatrix}
+\end{equation}
+\\
+
+The matrix simply shuffles the columns of the matrix around (in this case, the first and second columns have traded places), which is why it is called a permutation matrix. 
+\\
+
+b) When we compute PB, instead of the first and second columns of the matrix being switched, it is now the first and second rows of the matrix that are switched.
+
+\begin{equation}
+    PB = 
+    \begin{pmatrix}
+    0\times B_{1,1} + B_{2,1} + 0\times B_{3,1} & 0\times B_{1,2} + B_{2,2} + 0\times  B_{3,2}  & 0\times B_{1,3} +  B_{2,3} + 0\times B_{3,3}\\
+    B_{1,1} + 0\times B_{2,1} + 0\times B_{3,1} & B_{1,2} + 0\times B_{2,2} + 0\times  B_{3,2}  & B_{1,3} + 0\times B_{2,3} + 0\times B_{3,3}\\
+    0 \times B_{1,1} + 0\times B_{2,1} + B_{3,1} & 0\times B_{1,2} + 0\times B_{2,2} +  B_{3,2}  & 0\times B_{1,3} + 0\times B_{2,3} + B_{3,3}
+    \end{pmatrix} 
+    \newline
+    =
+    \begin{pmatrix}
+    B_{2,1} & B_{2,2} & B_{2,3}\\
+    B_{1,1} & B_{1,2} & B_{1,3}\\
+    B_{3,1} & B_{3,2} & B_{3,3}\\
+    \end{pmatrix}
+\end{equation}
+\\
+
+
+
+\break
+\section{Problem 2.5}
+a) Show that T is linear: consider the matrix M and the matrix N:
+
+$$ \textbf{M}=\begin{pmatrix}
+    5 & 6\\
+    7 & 8
+\end{pmatrix}
+\textbf{N}=\begin{pmatrix}
+    10 & 10\\
+    10 & 10
+\end{pmatrix}$$
+Lets see if our matrix is closed under addition and multiplication:
+$$
+T(M) =\begin{pmatrix}
+    3 & 4\\
+    3 & 4
+\end{pmatrix}
+T(N) =\begin{pmatrix}
+    10 & 10\\
+    10 & 10
+\end{pmatrix}
+$$
+
+$$
+T(M) + T(N)  =\begin{pmatrix}
+    13 & 14\\
+    13 & 14
+\end{pmatrix} \\
+=
+T(M+N) =\begin{pmatrix}
+    13 & 14\\
+    13 & 14
+\end{pmatrix} \textbf{ Closed Under Addition!}\\
+$$
+Lets see if it's closed under multiplication:
+$$
+T(M) =\begin{pmatrix}
+    3 & 4\\
+    3 & 4
+\end{pmatrix} \text{ and } \alpha = 2 \alpha \times T(M) =\begin{pmatrix}
+    6 & 8\\
+    6 & 8
+\end{pmatrix}  $$
+$$
+M \times \alpha =\begin{pmatrix}
+    10 & 12\\
+    14 & 16
+\end{pmatrix} T(M\times \alpha) =\begin{pmatrix}
+    6 & 8\\
+    6 & 8
+\end{pmatrix} \textbf{ Closed Under Multiplication!}
+$$ \\
+\textbf{Therefore, our transformation is linear!}
+
+\par
+b) Calculate the kernel of T as follows:
+
+\(\qquad \qquad  \begin{pmatrix}
+    2 & -1 & 0\\
+    2 & -1 & 0 \\
+\end{pmatrix} 
+ \) (Set our augmented matrix to 0)
+
+
+\(\qquad \qquad  \begin{pmatrix}
+    2 & -1 & 0\\
+    0 & 0 & 0 \\
+\end{pmatrix} 
+ \) ($R_2 - R_1$)
+
+\( \qquad \qquad
+2x_1 = x_2
+\) ($x_2$ is our free variable)
+
+The basis for Ker(T) exists, as $x_2$ is a free variable. The basis is as follows: $Ker(T) = x_2(\frac{1}{2},1)$ The basis for the Im(T) is the independent vector in the matrix, column 1 (column 2 is dependent as column 1 can be divided by -2 to create column 2). $Im(T) = span(2,2)$ and $Rank(T)=1$ (this could also be simplified and written as (1,1). 
+
+
+
+
+\end{document}

@@ -1,0 +1,542 @@
+\documentclass[12pt,twoside]{article}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz,graphicx,amsmath,amsfonts,amscd,amssymb,bm,cite,epsfig,epsf,url}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{amsthm,multirow,wasysym,appendix}
+\usepackage{array,subcaption} 
+% \usepackage[small,bf]{caption}
+\usepackage{bbm}
+\usepackage{pgfplots}
+\usetikzlibrary{spy}
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows,automata}
+\usepackage{thmtools}
+\usepackage{blkarray} 
+\usepackage{textcomp}
+\usepackage[left=0.8in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+
+\title{Linear Algebra HW 3}
+\author{gjd9961 }
+\date{September 2021}
+
+\begin{document}
+
+\maketitle
+Name: Giulio Duregon
+
+\break
+
+\begin{enumerate}
+    \item{\textbf{Problem 3.1}}\\
+    
+For a square $n\times n$ matrix $M$ to be invertible we must have the following criteria:
+    \begin{itemize}
+    \item     Rank(M) = n
+    \item     Ker(M) = 0
+    \item     For all $y \in \mathbb{R}^n$ there exists $x$ such that $Mx=y$
+    \end{itemize}
+
+a) \textit{A square matrix with a column of zeros cannot be invertible.} $\textbf{True}$ \\
+  
+If the matrix $M$ doesn't have non-zero entries in its diagonal, its columns cannot span all of $\mathbb{R}^n$. If that is true, then $Rank(M) < n$, and the matrix is not invertible. 
+ 
+b)\textit{If every row of a matrix adds up to 0, it must be singular.} \textbf{True} 
+By definition, if a linear combination of a matrix's columns can be made to produce the zero vector, (the columns are multiplied and the rows are summed such that there exists a $\vec{x} \in \mathbb{R}^m$ such that $A\vec{x} = 0$) then it is a linearly dependent set. Lets take a $n \times m$ matrix $M$ and apply what we just stated:  $$\exists \ \alpha _1, \alpha _2, \dots, \alpha _m \in \mathbb{R} \text{ Such That } \alpha _1 \times c_1 + \alpha _2 \times c_2 + ,\dots,+ \alpha _m \times c_m = \emptyset$$
+Where $\{c_1, c_2, \dots, c_m\}$ are the columns of the matrix $M$. We know that if a matrix is linearly dependent then $Rank(M) \neq n$ and $Ker(M) \geq 1$. Therefore, the matrix must be singular.
+
+c) \textit{If every column of a matrix adds up to 0, it must be singular.} \textbf{True} \\
+
+Much like problem b), this statement is true because by definition this condition will create a matrix with a set of linearly dependent columns. To illistrate this point, (and while being lazy and leveraging our answer from part b), lets use the fact that the rank of a matrix $M$ is the same as its transpose. That is to say: $Rank(M) = Rank(M^T)$
+Lets take a matrix in which every column adds up to 0, and transpose it. Now, every row adds up to 0, and we can apply the same logic that we did in our last problem. $$\exists \ \alpha _1, \alpha _2, \dots, \alpha _m \in \mathbb{R} \text{ Such That } \alpha _1 \times c_1 + \alpha _2 \times c_2 + ,\dots,+ \alpha _m \times c_m = \emptyset$$
+We now know by definition that there exists a $\vec{x}$ such that $A\vec{x} = 0$ and that the columns are linearly dependent, and that there exista null space meaning the matrix is singular. \\
+Alternatively, instead of taking the transpose, we could use the Gaussian row reduction algorithm to simplify our matrix. What you would find is that in every matrix that fits the condition of the problem statement, there would be a free variable and therefore, $Ker(M) \geq 0$ and the matrix would not be invertible. 
+
+\break
+
+d) \textit{Every matrix with 1's down the main diagonal is invertible.} \textbf{False}\\
+    This is false by counter example. Consider the $3x3$ matrix $M$:
+    $$
+    M = \begin{pmatrix}
+     1 & 1 & 1 \\
+     1 & 1 & 1 \\
+     1 & 1 & 1 \\
+    \end{pmatrix}
+    $$
+    The $Dim(Span(M))=1$ as column 1 can produce columns 2 and 3 (2 and 3 are linearly dependent). If $Dim(Span(M)) =1 $ then $Rank(M) = 1$ by definition. Using the criteria of an invertible matrix outlined earlier, the matrix $M$ is singular. Therefore, not every matrix with 1's down its main diagonal is invertible.
+
+e) \textit{If $A$ is invertible, then $A^{-1}$ and $A^2$ are invertible.} \textbf{True}\\
+
+By definition, if a matrix $A$ is invertible there exists a matrix $A^{-1}$ such that $A\times A{^-1} = I$ (I being the identity matrix) and that $A^{-1} \times A = I$, Therefore $A$ and $A^{-1}$ are invertible. \\
+For $A^2$ lets consider the following: $$
+    A^2 = A \times A $$
+    
+    What happens if we multiply by $A^{-1}$?
+    $$
+     A^{-1} \times A^2 = A^1 = A \text{ and again? } A^{-1} \times A = I $$
+     
+     Therefore:
+     $$ A^{-1} \times A^{-1} \times A^2 = I 
+$$
+Therefore, the matrix $A^2$ has an inverse  $A^{-1} \times A^{-1} = A^{-2}$ and is invertible such that: 
+$$A^2 \times A^{-2} = I \text{ and } A^{-2} \times A^2 = I$$
+
+
+\break
+
+    \item{\textbf{Problem 3.2}}
+    \subitem
+        a) When $a \neq 0$ then $Rank(A)=3$, when $a=0$ $Rank(A) = 2$
+        \begin{equation}
+ \begin{split}
+\begin{pmatrix}
+ 5a-2 & 3a & 3a-3 \\
+ -4a+2 & -3a+1 & -2a+2 \\
+ -4a+2 & -3a & -2a+3 \\
+\end{pmatrix}
+ \textbf{Start with out matrix A}
+ \end{split}
+        \end{equation}
+      \begin{equation}
+ \begin{split}
+\begin{pmatrix}
+ 5a-2 & 3a & 3a-3 \\
+ 0 & 1 & -1 \\
+ -4a+2 & -3a & -2a+3 \\
+\end{pmatrix}
+ \textbf{$R_2-R_3$}
+ \end{split}
+        \end{equation}
+      \begin{equation}
+ \begin{split}
+\begin{pmatrix}
+ 5a-2 & 3a & 3a-3 \\
+ 0 & 1 & -1 \\
+ a & 0 & a \\
+\end{pmatrix}
+ \textbf{$R_3+R_1$}
+ \end{split}
+        \end{equation}
+
+
+We have now row reduced as much as we can. Lets explore the situation where we have $a=1$:
+      \begin{equation}
+ \begin{split}
+\begin{pmatrix}
+ 3 & 3 & 0 \\
+ 0 & 1 & -1 \\
+ 1 & 0 & 1 \\
+\end{pmatrix}
+ \end{split}
+        \end{equation} \\
+We can easily see that we can take a linear combination of columns 1 and 2 to form column 3:
+$$
+    1 \times \begin{pmatrix}
+     3 \\
+     0 \\
+     1 \\
+    \end{pmatrix} 
+    +
+    -1 \times 
+    \begin{pmatrix}
+     3 \\
+     1 \\
+     0 \\
+    \end{pmatrix} 
+    =
+    \begin{pmatrix}
+     0 \\
+     -1 \\
+     1 \\
+    \end{pmatrix} 
+    = \textbf{Column 3}
+$$
+The same thing happens if we have $a=0$\\
+      \begin{equation}
+ \begin{split}
+\begin{pmatrix}
+ -2 & 0 & -3 \\
+ 0 & 1 & -1 \\
+ 0 & 0 & 0 \\
+\end{pmatrix}
+ \end{split}
+        \end{equation} \\
+We can easily see that we can take a linear combination of columns 1 and 2 to form column 3:
+$$
+    1.5 \times \begin{pmatrix}
+     -2 \\
+     0 \\
+     0 \\
+    \end{pmatrix} 
+    +
+    -1 \times 
+    \begin{pmatrix}
+     0 \\
+     1 \\
+     0 \\
+    \end{pmatrix} 
+    =
+    \begin{pmatrix}
+     -3 \\
+     -1 \\
+     0 \\
+    \end{pmatrix} 
+    = \textbf{Column 3}
+    $$
+Since we have 2 linearly independent columns when $a=0$ and when $a=1$ then when $a = x | x \in \{0,1\}$ then $dim(Im(A)) = 2$ and $Rank(A) = 2$. When we have $a\neq 0$ then $Rank(A) = 3$, as we will have 3 linearly independent columns. Take for example $a=10$
+      \begin{equation}
+ \begin{split}
+\begin{pmatrix}
+ -2 & 30 & -23 \\
+ 0 & 1 & -1 \\
+ 10 & 0 & 10 \\
+\end{pmatrix} \text{ after row reduction } = 
+    \begin{pmatrix}
+ 1 & 0 & 0 \\
+ 0 & 1 & 0 \\
+ 0 & 0 & 1 \\
+    \end{pmatrix}
+ \end{split}
+        \end{equation} \\
+
+This holds for any value for $a \notin \{0,1\}$ as the matrix will have 3 linearly independent columns with non-zero entries in the diagonal of our $3\times 3$ matrix.
+
+\break 
+
+b) In part a) we proved that when $a=0$ then $Rank(A)=2$, and therefore $Dim(Ker(A))=1$ follows (due to the fact we have 3 columns and the rank nullity theorom states Rank - dim(Null) = columns). As there is no pivot column in our last row of A (Equation (5)), $x_3$ is a free variable, and the basis for the kernel is outlined below. As the first two columns are linearly independent, our basis for $Im(A)$ is the first two columns. Sorry that the equation is at the bottom of the page, im bad at LateK.
+
+    $$ \text{Basis for } Ker(A) = \begin{pmatrix}
+ \frac{-3}{2} \\
+ 1 \\ 
+ 1 \\
+\end{pmatrix}
+\text{ and } Im(A) = \begin{pmatrix}
+ -2 & 0 \\
+ 2 & 1\\ 
+ 2 & 0\\
+\end{pmatrix}$$ 
+
+
+
+\break
+
+    \item{\textbf{Problem 3.3}}
+    Let $ A = \begin{pmatrix}
+        1 & 0\\
+        2 & 3
+    \end{pmatrix}
+    $,  
+    $$
+    B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        2 & 3 & 0 \\
+        4 & 5 & 0
+    \end{pmatrix}
+    \text{ and }
+    C = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        2 & 3 & 0 & 0 \\
+        0 & 4 & 5 & 0 \\
+        6 & 0 & 7 & 8
+    \end{pmatrix}
+    \text{ and }
+    D = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        2 & 3 & 0 & 0 \\
+        0 & 4 & 0 & 0 \\
+        0 & 5 & 6 & 0
+    \end{pmatrix}
+    $$ \\
+\par
+a) We can determine the ranks of the matrix by reasoning on the span of the columns:
+\begin{itemize}
+    \item For matrix A, we have two linearly independent columns. Note that A is a $n \times n$ square matrix and we have $n$ entries in the diagonal with $n$ linearly independent columns. The matrix can be row reduced to make the canonical matrix for $\mathbb{R}^2$. Therefore, this the $Dim(span(c_1,c_2))=2$ and $Rank(A)=2$. $$
+        \textbf{Here's our matrix } A = \begin{pmatrix}
+         1 & 0 \\
+         2 & 3 \\
+        \end{pmatrix} R_2 - 2R_1 \text{ then } \frac{R_2}{3} =  \begin{pmatrix}
+         1 & 0 \\
+         0 & 1 \\
+        \end{pmatrix}
+    $$
+    
+    \item For Matrix B, again we have an $n \times n$ square matrix, but this time the third column is all 0's. This means that we won't have non-zero entries in the diagonal, and we can quickly conclude we only have two independent columns. The $Dim(span(c_1,c_2,c_3))=2$ and $Rank(B)=2$. We can prove the linear independence by row reducing our matrix.$$
+        B = \begin{pmatrix}
+         1 & 0 & 0\\
+         2 & 3 & 0\\
+         4 & 5 & 0\\
+        \end{pmatrix} R_2 - 2R_1 \text{ and } R_3-4R_1 =  \begin{pmatrix}
+         1 & 0 & 0\\
+         0 & 3 & 0\\
+         0 & 5 & 0\\
+        \end{pmatrix} \frac{R_2}{3} \text{ then } R_3 -5R_2 =   \begin{pmatrix}
+         1 & 0 & 0\\
+         0 & 1 & 0\\
+         0 & 0 & 0\\
+        \end{pmatrix}
+    $$
+
+    \item For Matrix C, again we have an $n \times n$ square matrix, and again we have non-zero entries in the diagonal. Furthermore, our matrix is in upper-triangular form, making row reduction easy to compute. The row reduction algorithm of taking the 1st entry in the 1st row can cancel all below it, followed by the 2nd entry in the second row, ect, can be performed on this matrix until you're left with the canonical basis for $\mathbb{R}^4$. Therefore, $Dim(Span(c_1,c_2,c_3,c_4) = 4$ and $Rank(C)=4$. Proof: $$
+    C = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        2 & 3 & 0 & 0 \\
+        0 & 4 & 5 & 0 \\
+        6 & 0 & 7 & 8
+    \end{pmatrix} R_2 - 2R_1 \text{';; and } R_4 - 6R_1 = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 3 & 0 & 0 \\
+        0 & 4 & 5 & 0 \\
+        0 & 0 & 7 & 8
+    \end{pmatrix} \frac{R_2}{3} then R_3-4R_2 = $$
+    $$
+    \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 5 & 0 \\
+        0 & 0 & 7 & 8
+    \end{pmatrix} \frac{R_3}{5} \text{ then } R_4-7R_3 \text{ then } \frac{R_4}{8} = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1
+    \end{pmatrix}
+    $$
+    
+    
+    
+    \item For Matrix D, again we have a $n \times n$ square matrix, and we can quickly see that the last column is all 0's, and therefore we know for certain that we won't have non-zero entries in the diagonal. We can quickly recreate the row reduction algorithm we used in Matrix C to note that we have 3 linearly independent columns in our matrix, and therefore $Dim(Span(c_1,c_2,c_3,c_4) = 3$ and $Rank(D)=3$.
+    $$
+     D = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        2 & 3 & 0 & 0 \\
+        0 & 4 & 0 & 0 \\
+        0 & 5 & 6 & 0
+    \end{pmatrix} R_2-2R_1 \text{ then } \frac{R_2}{3} = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 4 & 0 & 0 \\
+        0 & 5 & 6 & 0
+    \end{pmatrix} R_3-4R_2 \text{ then } R_4-5R_2 \text{ then } \frac{R_4}{6}$$
+    $$ = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 1 & 0
+    \end{pmatrix}
+    $$
+\end{itemize}
+
+b) Consider a generic lower-triangular matrix $M \in \mathbb{R}^{n\times n}$ (meaning that the entries $M_{i,j}= 0$ if $j>i$. Show that if all diagonal entries of $M$ are non-zero, $M$ is invertible. To prove this statement, let B equal:\\
+
+$$B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        2 & 3 & 0 \\
+        4 & 5 & 1
+\end{pmatrix}$$ \\
+
+We can use our Gaussian row reduction algorithm to row reduce this matrix and show that it is row-equivalent with the canonical basis for $\mathbb{R}^3$ (remember in this case our $n=3$).\\
+
+\begin{equation}
+\begin{split}
+    B= \begin{pmatrix}
+        1 & 0 & 0 \\
+        2 & 3 & 0 \\
+        4 & 5 & 1
+\end{pmatrix} \textbf{Start with our matrix}\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        4 & 5 & 1
+\end{pmatrix} \textbf{Subtract $2\times R_1$ from $R_2$ then divide $R_2$ by 3}\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1
+\end{pmatrix} \textbf{Subtract $4\times R_1$ from $R_3$ then subtract $5\times R_2$ from $R_3$}\\
+\end{split}
+\end{equation}
+
+The procedure we applied to matrix $B$ can be generalized to any generic $n\times n$ lower-triangular matrix with non-zero entries in the diagonal $M$ to produce the $n\times n$ canonical matrix. The $n\times n$ canonical matrix is a basis for $\mathbb{R}^n$ by definition, the columns will span all of  $\mathbb{R}^n$, and therefore the $Rank(canonical \ basis)=n$ and the $Dim(Ker(canonical \ basis))=0$. Therefore, matrix M has $Rank(M)=n$, $Ker(M)=0$, which are the prerequisites for M to be invertible. \\
+
+\par
+
+c) Lets again consider the Matrix $B$, but this time we're going to set one of the diagonal entries to 0 (this is actually just the way the matrix B was presented in the problem statement). \\
+
+$$B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        2 & 3 & 0 \\
+        4 & 5 & 0
+\end{pmatrix}$$ \\
+
+If we repeated the process we did in part b) you'll see that we only end up with two entries in our diagonal, meaning only two linearly independent columns, and one dependent column (the column full o zeros). The $Dim(span(Columns \ of \ B)) = 2$, and therefore $Rank(B)=2$.
+
+\begin{equation}
+\begin{split}
+    B= \begin{pmatrix}
+        1 & 0 & 0 \\
+        2 & 3 & 0 \\
+        4 & 5 & 0
+\end{pmatrix} \textbf{Start with our matrix}
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        4 & 5 & 1
+\end{pmatrix} \textbf{Subtract $2\times R_1$ from $R_2$ then divide $R_2$ by 3}
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 0
+\end{pmatrix} \textbf{Subtract $4\times R_1$ from $R_3$ then subtract $5\times R_2$ from $R_3$}
+\end{split}
+\end{equation}
+Our $Dim(Ker(B)) = 1$ as $x_3$ is a free variable, $Rank(B) = 2$ as $Dim(span(B))=2$. The matrix therefore, is no longer invertible. 
+\par
+d) For a generic $n\times n$ upper-triangular matrix $M$ to be invertible, it must have non-zero entries through the diagonal. We can lazily prove this by refrencing our answers in part a) and part b). We know that $Rank(M)=Rank(M^T)$, (proposition in lecture 3, chapter 4, slide 23/27), so lets take our matrix $B$ from part b) and transpose it.
+$$B = \begin{pmatrix}
+        1 & 0 & 0 \\
+        2 & 3 & 0 \\
+        4 & 5 & 1
+\end{pmatrix} B^T = \begin{pmatrix}
+        1 & 2 & 4 \\
+        0 & 3 & 5 \\
+        0 & 0 & 1
+\end{pmatrix}
+$$
+Here we can see that if we transpose a generic lower-triangular square $n\times n$ matrix, we get a generic upper-triangular square $n\times n$ matrix. Using $Rank(M)=Rank(M^T)$ we can conclude that what we found in part b) and part c) of this problem holds for upper-triangular matrices as well. In otherwords, for a generic upper-triangular square $n\times n$ matrix $M$ to be invertible, it must have non-zero diagonal entries. If it has non-zero entries in the diagonal, the matrix will be invertible, $Rank(M)=n$, $Ker(M)=0$, as well as for all $y \in \mathbb{R}^n$ there exists $x \in \mathbb{R}^n$ such that $Mx=y$
+
+
+
+
+\break
+
+    \item{\textbf{Problem 3.4}} \\
+    A) Show that for any matrices $A \in \mathbb{R}^{n\times k}, B \in \mathbb{R}^{k \times m}, Rank(A)\geq Rank(AB)$ \\
+    
+    First we must establish that the rank of any matrix is the lesser of its columns or rows, that is to say: $Rank(A^{n,k}) \leq min(n,k)$ \\
+    
+    Take for example a matrix that has rows $>$ columns, or $n > k$ $$A = \begin{pmatrix}
+        1 & 2 \\
+        3 & 4 \\
+        4 & 2 \\
+    \end{pmatrix} \text{ this matrix can be row reduced to: } \begin{pmatrix}
+        1 & 0\\
+        0 & 1\\
+        0 & 0\\
+    \end{pmatrix}$$
+    Our example where rows $>$ columns, Rank was equal to $k$ the number of columns which was the lesser of the two. Likewise, consider the example where there are more columns than rows, where $k > n$:
+    
+    $$A = \begin{pmatrix}
+        1 & 2 & 3\\
+        2 & 5 & 6 \\
+    \end{pmatrix} \text{ this matrix can be row reduced to: } \begin{pmatrix}
+        1 & 0 & 3\\
+        0 & 1 & 0\\
+    \end{pmatrix}$$
+    You can see that we have two pivot columns, and one free variable ($x_3$). Therefore, the $Rank(A)=2 = min(n,k)$. We have proved that $Rank(A^{n,k}) \leq min(n,k)$\\ 
+    
+    Now lets consider the statement $A \in \mathbb{R}^{n\times k}, B \in \mathbb{R}^{k \times m}, Rank(A)\geq Rank(AB)$ When we apply linear transformations $A\vec{x}=\vec{y}$ we either 1) retain rank or 2) lose rank (through virtue of the null space/kernel). This follows from what we proved earlier that $Rank(A^{n,m}) \leq min(n,m)$ \\
+    
+    Consider what happens if we pass a vector $\vec{x}$ through the transformation $AB$. Firstly we have $B\vec{x}=\vec{y}$ then we'd have $A\vec{y}=\vec{z}$. Remember, each time we linearly transform we either retain or lose rank. We went from $\vec{x} \in m \longrightarrow \vec{y} \in k \longrightarrow \vec{z} \in n$ Therefore, at best, the information in $\vec{x}$ was preserved during these two transformations meaning $dim(x)=dim(z)$ and $Rank(A) = Rank(AB)$. In any other case, where information was lost during the transformations (i.e. there's a non-trivial Kernel for A or B) then $dim(m) > dim(z)$ and $Rank(A) > Rank(AB)$. Therefore this proves our statement, $Rank(A) \geq Rank(AB)$
+    \par
+    b) Given a matrix $L \in R^{n\times m}$, show that $Ker(L) = Ker(L^TL)$ \\
+    Similarly to problem 1 b and c, if we transpose a matrix with linearly dependent columns, amount of linearly independent columns does not change, as some combination of columns can form another, and some combination of rows can form another. To prove this more rigorously, consider $$
+        L\vec{x} = 0 \text{ where } \vec{x} \in Ker(L) \text{ then } L^TL\vec{x} = 0
+    $$
+    $$
+    \text{Also: } L^TLx=0 \rightarrow x^TL^Tx =0 \rightarrow (Lx)^T(Lx) = 0 \rightarrow Lx=0
+    $$
+    Since the mapping works both ways, $Ker(L)$ and $Ker(L^TL)$ share the same Kernel.
+
+    c) Computation:
+    $$
+    Dim(L^TL \in \mathbb{R}^{m\times m}) = Rank(L^TL) + dim(Ker(L^TL)) \text{ by definition of rank nullity}
+    $$
+    
+    $$
+    Rank(L) + dim(Ker(L))= Rank(L^TL) + dim(Ker(L^TL)) \text{ because } dim(L) = dim(L^TL) = m
+    $$
+    
+    $$
+    Rank(L) + dim(Ker(L))= Rank(L^TL) + dim(Ker(L)) \text{ substitute $Ker(L^tL)$ for $Ker(L)$}
+    $$
+      $$
+    Rank(L) = Rank(L^TL) \leq Rank(L^T) \text{ simplify and apply part a) }
+    $$
+       $$
+    Rank(L^T) = Rank(LL^T) \leq Rank(L) \text{ do the same step with $L^T$ and apply part a) }
+    $$
+    
+     $$
+    Rank(L) = Rank(L^T)
+    $$
+    
+    
+    In essence, since we have proven that $Rank(A) \geq Rank(AB)$ and $Ker(L) = Ker(L^TL)$ we know that linear transformations (transposes included) either retain or lose rank, and that the Kernel of a matrix is equal to that of its transpose. Using Rank-Nullity, we know that a columns matrix (dimension on input space) will be equal to the dimension of its image (rank) + dimension of its kernel, that is: For $M^{n\times m} \  m=Rank(M)+Ker(M)$ \\
+    
+\break
+
+ \item{\textbf{Problem 3.5}}\\
+ 
+ The matrix $A$ will perform a "flipping" operation on an $n\times n$ matrix $B$ that it multiplies, where the matrix $B$ will have its columns order "flipped" from $c_1, c_2, c_3,c_4$ before transformation to $c_4,c_3,c_2,c_1$ post transformation. For example: \\
+ $$
+ B = \begin{pmatrix}
+  \vdots & \vdots & \vdots & \vdots \\
+  \vdots & \vdots & \vdots & \vdots \\
+  (c_1) & \dots & \dots & (c_n) \\
+  \vdots & \vdots & \vdots & \vdots \\
+  \vdots & \vdots & \vdots & \vdots \\
+ \end{pmatrix}
+  AB = \begin{pmatrix}
+  \vdots & \vdots & \vdots & \vdots \\
+  \vdots & \vdots & \vdots & \vdots \\
+  (c_n) & \dots & \dots & (c_1) \\
+  \vdots & \vdots & \vdots & \vdots \\
+  \vdots & \vdots & \vdots & \vdots \\
+ \end{pmatrix}
+ $$
+ 
+ Therefore we can ascribe the following rule if when finding values of $A^k$ for all $k \in \mathbb{N}:$ \\ 
+ 
+ If k is an even integer: 
+ $$
+    A = \begin{pmatrix}
+        1 & 0 & \cdots & 0 & 0 \\
+        0 & 1 & \cdots & \cdots & 0 \\
+        \vdots & & & \vdots\\
+        0 & 0 & \cdots & 1 & \vdots \\
+        0 & 0 & \cdots & \cdots & 1
+    \end{pmatrix}.
+    $$
+ 
+ If k is an odd integer: 
+ $$
+    A = \begin{pmatrix}
+        0 & 0 & \cdots & 0 & 1 \\
+        0 & \cdots & \cdots & 1& 0 \\
+        \vdots & & & \vdots\\
+        0 & 1 & 0& \cdots & \vdots \\
+        1 & 0 & \cdots & \cdots & 0
+    \end{pmatrix}.
+    $$
+ 
+\end{enumerate}
+\end{document}

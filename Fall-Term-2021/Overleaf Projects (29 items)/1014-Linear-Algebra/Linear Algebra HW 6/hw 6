@@ -1,0 +1,570 @@
+\documentclass[12pt,twoside]{article}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz,graphicx,amsmath,amsfonts,amscd,amssymb,bm,cite,epsfig,epsf,url}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{amsthm,multirow,wasysym,appendix}
+\usepackage{array,subcaption} 
+% \usepackage[small,bf]{caption}
+\usepackage{bbm}
+\usepackage{pgfplots}
+\usetikzlibrary{spy}
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows,automata}
+\usepackage{thmtools}
+\usepackage{blkarray} 
+\usepackage{textcomp}
+\usepackage[left=0.8in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+\usepackage{pdfpages}
+
+\title{Linear Algebra HW 6}
+\author{gjd9961}
+\date{October 2021}
+
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 6.1}
+
+a) Show that 6 is an eigenvalue for the matrices $A$ and $B$ in $\R^3$ defined below. In each case give one associate eigenvector.  $$
+    A = \begin{bmatrix}
+        1 & 2 & 3\\
+        2 & 3 & 1\\
+        3 & 1 & 2
+    \end{bmatrix} , \quad
+    B = \begin{bmatrix}
+        1 & 2 & 3\\
+        4 & 0 & 2\\
+        4 & 5 & -3
+    \end{bmatrix} 
+    $$
+Lets begin with Matrix $A$. Let $x\in \R^3$. We know that $Ax = \lambda x$ if $A$ is a linear transformation and $x$ is an eigenvector with associated eigenvalue $\lambda$. Using the given eigenvalue $\lambda = 6$ we can calculate our eigenvector $x$ using:  $(A-Id_3\lambda)x = 0$ which is the same as finding $Ker(A-Id_n\lambda)$
+\begin{equation}
+    \begin{split}
+          (A-Id_3\lambda) = \begin{bmatrix}
+        1-6 & 2 & 3\\
+        2 & 3-6 & 1\\
+        3 & 1 & 2-6
+    \end{bmatrix} = \begin{bmatrix}
+        -5 & 2 & 3\\
+        2 & -3 & 1\\
+        3 & 1 & -4
+        \end{bmatrix}
+    \end{split}\\
+    \begin{split}
+         \text{Solve for $(A-Id_3\lambda)x = 0$} = \begin{bmatrix}
+        -5 & 2 & 3 & | 0\\
+        2 & -3 & 1 & |0\\
+        3 & 1 & -4 & | 0
+        \end{bmatrix} 
+    \end{split} \\
+    \begin{split}
+         \frac{R_1}{-5} \text{ then }R_2 - 2R_1 \text{ and } R_3-3R_1 = \begin{bmatrix}
+        1 & -.4 & -.6 & | 0\\
+        0 & -2.2 & 2.2 & |0\\
+        0 & 2.2 & -2.2 & | 0
+        \end{bmatrix} 
+    \end{split} \\
+    \begin{split}
+         R_3 + R_2 \text{ then } \frac{R_2}{-2.2} \text{ then } R_1+.4R_1 = \begin{bmatrix}
+        1 & 0& -1 & | 0\\
+        0 & 1 & -1 & |0\\
+        0 & 0 & 0 & | 0
+        \end{bmatrix} = x_3 \times \begin{bmatrix}
+        1\\
+        1\\
+        1
+        \end{bmatrix}
+    \end{split}
+\end{equation}
+
+The Vector $x=(1,1,1)$ is the associated eigenvector to the eigenvalue of $\lambda=6$ for Matrix $A$.
+\newpage
+
+Lets repeat the process with Matrix $B$.
+
+\begin{equation}
+    \begin{split}
+        (B-Id_3\lambda) = \begin{bmatrix}
+        1-6 & 2 & 3\\
+        4 & 0-6 & 2\\
+        4 & 5 & -3-6
+        \end{bmatrix} = \begin{bmatrix}
+        -5 & 2 & 3\\
+        4 & -6 & 2\\
+        4 & 5 & -9
+        \end{bmatrix}
+    \end{split}\\
+    \begin{split}
+         \text{Solve for $(B-Id_3\lambda)x = 0$} = \begin{bmatrix}
+        -5 & 2 & 3 & | 0\\
+        4 & -6 & 2 & | 0\\
+        3 & 1 & -4 & | 0
+        \end{bmatrix} 
+    \end{split}\\
+    \begin{split}
+         \frac{R_1}{-5} \text{ then }R_2 - 4R_1 \text{ and } R_3-3R_1 = \begin{bmatrix}
+        1 & -.4 & -.6 & | 0\\
+        0 & -4.4 & 4.4 & | 0\\
+        0 & 6.6 & -6.6 & | 0
+        \end{bmatrix} 
+    \end{split} \\
+     \begin{split}
+         \frac{R_2}{-4.4}  \text{ then }  R_3 + 6.6R_2 \text{ then } R_1+.4R_1 = \begin{bmatrix}
+        1 & 0& -1 & | 0\\
+        0 & 1 & -1 & |0\\
+        0 & 0 & 0 & | 0
+        \end{bmatrix} = x_3 \times \begin{bmatrix}
+        1\\
+        1\\
+        1
+        \end{bmatrix}
+    \end{split}
+\end{equation}
+We have found that the vector $x$ that satisfies $(B-Id_n\lambda)x = 0$ is $x=(1,1,1)$. Thus $(1,1,1)$ is the eigenvector associated with the eigenvalue $\lambda=6$ for the Matrix $B$. \\
+
+b) Let $A \in \R^{n \times n}$ be a square matrix such that the sum of its rows is equal. In other words, there exists $\mu \in \R$ such that for any integer $i$ $(1 < i \leq n)$, $\sum_{j=1}^n A_{i,j} = \mu$. Show that $A$ admits one pair of eigenvector-eigenvalue and give their values. \\
+
+We can prove this statements in the following way. Let $A$ be our $\R^{n\times n}$ matrix and $\mu \in \R$ such that for any integer $i$ $(1 < i \leq n)$, $\sum_{j=1}^n A_{i,j} = \mu$. Let $x$ be a vector in $\R^n$ where all the entries of $x$ are equal to $1$, $x_i = 1$ for any integer $ 0< i \leq n$. Therefore:
+\begin{equation}
+    \begin{split}
+        Ax &= \mu x\\ 
+        Ax-\mu x &= 0\\
+        (A-Id_n\mu)x &= 0 \qed
+    \end{split}
+\end{equation}
+
+We have shown that Matrix $A$ admits an eigenvalue of $\lambda = \mu$ with associated eigenvector $x$ where all the entries of $x$ are equal to $1$, $x_i = 1$ for any integer $ 0< i \leq n$. Note that the since the eigenvalue is $x=(1_1,\dots,1_n)$ it can be scaled to take the form of any vector who's entries are all the same. For example: $y=(y_1,y_2,\dots,y_n)$ where $y_1=y_2=\dots,y_n$
+
+
+
+\newpage 
+
+
+\section{Problem 6.2}
+For a square symmetric matrix, we call eigen decomposition the collection of all its eigenvector-eigenvalue pairs. Let $A\in \R^{n\times n}$ be a square symmetric matrix. Give the eigen decomposition of $A^k$ as a function of the eigen decomposition of $A$ for any integer $k > 0$. \\
+
+The eigen decomposition of a symmetrical square matrix $A$ is defined as $A = PDP^T$, where $P$ is the orthonormal basis that consists of the eigenvalues of $A$ and $D$ is a diagonal matrix who's entries correspond to the ordered pair of eigenvalues for the eigenvectors in $P$. \\
+
+For an example in $\R^3$, let $P = \{ev_1,ev_2,ev_3\}$ be the eigenvectors of a square symmetrical Matrix $B \in \R^{3\times 3}$ that compose an orthonormal basis of $\R^n$ with associated eigenvectors $\lambda_1, \lambda_2,\lambda_3$. Then the eigen decomposition of $B = PDP^T$ where:
+
+$$
+    P = \begin{bmatrix}
+    \vdots & \vdots & \vdots \\
+    ev_1 & ev_2 & ev_3\\
+    \vdots & \vdots & \vdots \\
+    \end{bmatrix}
+    D = \begin{bmatrix}
+    \lambda_1 & 0 & 0\\
+    0 & \lambda_2 & 0 \\
+    0 & 0 & \lambda_3
+    \end{bmatrix}
+    P^T = \begin{bmatrix}
+    \dots & ev_1 & \dots \\
+    \dots & ev_2 & \dots \\
+    \dots & ev_3 & \dots 
+    \end{bmatrix}
+$$
+
+Lets go back to the general example for any symmetrical square matrix $A \in \R^{n\times n}$. It follows that for any integer $k>0$ $A^k = PD^kP^T$
+Proof:
+
+\begin{equation}
+    \begin{split}
+         A^k &= A_1 \times A_2 \times \dots \times A_k
+    \end{split} \\
+    \text{All the A's are equal, the subscript is just to show that there are n of them}\\
+    \begin{split}
+        A^k &= P_1D_1P^T_1 \times P_2D_2P^T_2 \dots \times P_kD_kP^T_k
+    \end{split} \\
+     \text{We can substitute $PDP^T$ for every $A$}\\
+    \begin{split}
+        A^k &= P_1D_1\times D_2 \dots \times D_kP^T_k
+    \end{split} \\
+    \text{All $PP^T$s that occur in the middle simplify to $PP^T = Id_n$ as P is orthonormal}  \\
+        \begin{split}
+        A^k &= P_1D^kP^T_n = PD^kP^T  \qed
+    \end{split} \\
+    \text{We are left with the product of one $P$ at the start $k\ D's$ in the middle and one $P^T$ at the end}
+    \end{equation}
+
+Thus, we have shown that using the eigen decomposition of the matrix $A$, we can calculate any value of $A^K$ using $A^K=PD^KP^T$
+
+
+\newpage 
+
+\section{Problem 6.3}
+ The trace of a square $A\in \R^{n\times n}$ matrix is defined as the sum of its diagonal elements
+    $$
+    \mathrm{Tr}(A) = \sum_{i=1}^n A_{i,i}.
+    $$
+    
+a) Show that for any $B \in R^{n \times m}$ and $C \in \R^{m \times n}$, $\mathrm{Tr}(BC) = \mathrm{Tr}(CB)$. \\
+
+The trace of $BC$ will be $\sum_{i=1}^n BC_{ii}$ Lets manipulate the expression:
+
+\begin{equation}
+    \begin{split}
+        Tr(BC) &= \sum_{i=1}^n BC_{ii} \\
+                &= \sum_{i=1}^n\sum_{j=1}^m B_{ij}C_{ji}\\
+                &= \sum_{j=1}^m\sum_{i=1}^n C_{ji}B_{ij}\\
+                &= \sum_{j=1}^m CB_{jj} = Tr(CB)
+    \end{split}
+\end{equation}
+
+We can show this works the other way too:
+
+\begin{equation}
+    \begin{split}
+        Tr(CB) &= \sum_{j=1}^m CB_{jj} \\
+                &= \sum_{j=1}^m\sum_{i=1}^n C_{ji}B_{ij}\\
+                &= \sum_{i=1}^n\sum_{j=1}^m B_{ij}C_{ji}\\
+                &= \sum_{i=1}^n BC_{ii} = Tr(BC)  \qed
+    \end{split}
+\end{equation}
+
+Therefore $Tr(BC) = Tr(CB)$\\ 
+
+\newpage
+
+b) Use the previous result to show that for a symmetric matrix $A\in \R^{n\times n}$, its trace is equal to the sum of its eigenvalues.\\
+
+We know that for any symmetric square matrix $A \in \R^{n\times n}$ can be expressed by its eigen decomposition: $A = PDP^T$ where $P$ is the orthonormal basis that consists of the eigenvalues of $A$ and $D$ is a diagonal matrix who's entries correspond to the ordered pair of eigenvalues for the eigenvectors in $P$. (See example in $\R^3$ demonstrated in 6.2) \\ 
+
+Let $A$ be our symmetrical square matrix, and $PDP^T$ be the eigen decomposition of $A$. Let $B=DP^T$ and $C=P$. We will use what we know from part a) that $Tr(BC)=Tr(CB)$. \\
+
+Proof as follows:
+
+\begin{equation}
+    \begin{split}
+        \text{Prove that:} \  Tr(A) & = Tr(D)\\
+        \hline
+        \text{Use eigen decomposition} \longrightarrow Tr(A) &= Tr(PDP^T)\\
+        \text{Substitute B and C for $DP^T$ and $P$ respectively} \longrightarrow Tr(PDP^T) &= Tr(CB)\\
+        \text{Use what we know from part a)} \longrightarrow Tr(CB) &= Tr(BC)\\
+        \text{Substitute $DP^T$ and $P$ for B and C respectively} \longrightarrow Tr(BC) &= Tr(DP^TP)\\
+        \text{Since P is orthonormal we have $P^TP=Id_n$} \longrightarrow  \ Tr(DP^TP) &= Tr(DId_n)\\
+        Tr(DId_n) = Tr(D) &= \sum_{i=1}^nD_{ii} \qed
+    \end{split}
+\end{equation}
+
+Since $D$ is a diagonal matrix consisting of only the eigenvalues of $A$, the trace of $D$ is equal to the sum of all of the eigenvalues of $A$. Since we have shown that $Tr(A)=Tr(D)$, it follows that $Tr(A)$ is equal to the sum of all of the eigenvalues of $A$.
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\section{Problem 6.4}
+Consider a Washington square squirell trapped in a box divided in 9 rooms. At any point of time, the squirell decides to go through any of the available doors or stay in the room, all actions with equal probability. Use \texttt{numpy} or any other programming language to help you solve this problem.\\
+
+
+
+a)Construct the transition stochastic matrix $P$ for this problem. Can you find an integer $k \leq 1$ such that $P^k$ has only strictly positive entries?\\
+
+We can construct a stochastic matrix $P$ by putting the probability of the squirrel being in a room given some initial condition into a matrix.
+$$ 
+    P = \begin{bmatrix}
+ 1/3&1/4&0&1/4&0&0&0&0&0\\
+ 1/3&1/4&1/3&0&1/5&0&0&0&0\\
+ 0&1/4&1/3&0&0&1/4&0&0&0\\
+ 1/3&0&0&1/4&1/5&0&1/3&0&0\\
+ 0&1/4&0&1/4&1/5&1/4&0&1/4&0\\
+ 0&0&1/3&0&1/5&1/4&0&0&1/3\\
+ 0&0&0&1/4&0&0&1/3&1/4&0\\
+ 0&0&0&0&1/5&0&1/3&1/4&1/3\\
+ 0&0&0&0&0&1/4&0&1/4&1/3
+    \end{bmatrix}
+$$
+
+The integer $4$ is the smallest integer we can find such that $P^k$ has all of the entries positive. It is as follows:
+
+$$
+    P^4 = 
+\begin{bmatrix}
+0.16
+&
+0.12
+&
+0.09
+&
+0.12
+&
+0.09
+&
+0.05
+&
+0.09
+&
+0.05
+&
+0.03
+\\
+0.17
+&
+0.18
+&
+0.17
+&
+0.13
+&
+0.11
+&
+0.13
+&
+0.07
+&
+0.07
+&
+0.07
+\\
+0.09
+&
+0.12
+&
+0.16
+&
+0.05
+&
+0.09
+&
+0.12
+&
+0.03
+&
+0.05
+&
+0.09
+\\
+0.17
+&
+0.13
+&
+0.07
+&
+0.18
+&
+0.11
+&
+0.07
+&
+0.17
+&
+0.13
+&
+0.07
+\\
+0.16
+&
+0.14
+&
+0.16
+&
+0.14
+&
+0.16
+&
+0.14
+&
+0.16
+&
+0.14
+&
+0.16
+\\
+0.07
+&
+0.13
+&
+0.17
+&
+0.07
+&
+0.11
+&
+0.18
+&
+0.07
+&
+0.13
+&
+0.17
+\\
+0.09
+&
+0.05
+&
+0.03
+&
+0.12
+&
+0.09
+&
+0.05
+&
+0.16
+&
+0.12
+&
+0.09
+\\
+0.07
+&
+0.07
+&
+0.07
+&
+0.13
+&
+0.11
+&
+0.13
+&
+0.17
+&
+0.18
+&
+0.17
+\\
+0.03
+&
+0.05
+&
+0.09
+&
+0.05
+&
+0.09
+&
+0.12
+&
+0.09
+&
+0.12
+&
+0.16
+\end{bmatrix}    
+$$
+
+$k=4$ intuitively makes sense, as it's the minimum number of turns required to have probability of being in any given square given any starting position. Imagine the squirrel starts in one corner, say square 1, and wants to get to square 9 on the opposite end, which is the largest distance we can cover in our matrix. At minimum, it'll take the squirrel 4 turns. Hence, needing $k=4$ for $P^K$ to have strictly only positive values.
+
+\newpage
+
+b) Find the invariant measure for this problem.\\
+
+The invariant measure will be the eigenvector that correspond to the eigenvalue $\lambda = 1$. We can calculate the eigenvalues and eigenvectors of the matrix using numpy, or we can take advantage of the Perron-Frobenius Theorem and do the following:
+$$
+    \text{Invariant Measure: } Px=\lambda x \qquad \text{where $\lambda=1$}
+$$
+
+$$
+    \text{Therefore: } Px = x \xrightarrow{} Px-x=0 \xrightarrow{} (P-Id_n)x = 0
+$$
+
+$$
+    P-Id_n = \begin{bmatrix}
+ -2/3&1/4&0&1/4&0&0&0&0&0\\
+ 1/3&-3/4&1/3&0&1/5&0&0&0&0\\
+ 0&1/4&-2/3&0&0&1/4&0&0&0\\
+ 1/3&0&0&-3/4&1/5&0&1/3&0&0\\
+ 0&1/4&0&1/4&-4/5&1/4&0&1/4&0\\
+ 0&0&1/3&0&1/5&-3/4&0&0&1/3\\
+ 0&0&0&1/4&0&0&-2/3&1/4&0\\
+ 0&0&0&0&1/5&0&1/3&-3/4&1/3\\
+ 0&0&0&0&0&1/4&0&1/4&-2/3
+    \end{bmatrix}
+$$
+Solving for $(P-Id_n)x=0$ we get the following eigenvector that describes the long term behavior or our transition Matrix P aka the invariant measure: 
+$$\text{Invariant Measure: }\begin{bmatrix}
+    0.09090909\\
+    0.12121212 \\
+    0.09090909 \\
+    0.12121212 \\
+    0.15151515 \\
+    0.12121212 \\
+ 0.09090909 \\
+ 0.12121212 \\
+ 0.09090909
+\end{bmatrix}$$
+
+\newpage
+
+c)Using a symmetry argument, show that you can also solve this problem using a $ 3 \times 3$ matrix. 
+
+We can leverage the symmetry of our matrix. Note how there are three types of rooms, corner squares (squares 1,3,7,8 two doors each), side squares (2,6,4,8, three doors each), and the middle square (Square 5, four doors). We can construct a transition matrix $G$ such that $G$ conveys the probabilities of being in a corner, a side, or the middle square.
+$$
+    G = \begin{bmatrix}
+        Corner & Side & Middle & \ \\
+        1/3 & 1/2 & 0 & Corner\\
+        2/3 & 1/4 & 4/5 & Side\\
+        0 & 1/4 & 1/5 & Middle
+    \end{bmatrix}
+$$
+
+If we find the long term behavior of the matrix using the invariate measure. To do so we must find the eigenvector that corresponds to eigenvalue $\lambda=1$, which is equivalent for solving $(G-Id_n)x=0$, where $x$ is the eigenvector that corresponds to eigenvalue $\lambda = 1$.
+
+$$
+    G-Id_n = \begin{bmatrix}
+        -2/3 & 1/2 & 0\\
+        2/3 & -3/4 & 4/5\\
+        0 & 1/4 & -4/5
+    \end{bmatrix}
+$$
+$$
+ \text{Solving for }(G-Id_n)x=0 \text{ we get } x = 
+ \begin{bmatrix}
+ .3636\\
+ .4848\\
+ .1515
+ \end{bmatrix}
+$$
+
+We have now identified the long term behavior of transition matrix $G$, which is the probabilities the squirrel is in a corner box, the middle box, or a side box. We can check that these probabilities match the ones we found in part b): 
+\begin{equation}
+    \begin{split}
+        .090909*4 &= .3636 \text{  It matches  }\\
+        .121212 * 4 &= .4848 \text{  It matches  }\\
+        .1515 &= .1515 \text{  It matches  }\\
+    \end{split}
+\end{equation}
+
+We know we computed the transition matrix and invariant measure correctly as the long term probabilities of the squirrel ending up in any position in the box match the ones we have found in part b). If we wanted, we could solve part b) with our answer of part c) by using our $3\times 3$ matrix's invariant measure, and dividing by the appropriate number of boxes. For example, if we wanted to calculate the probability of the squirrel being in a corner, we could calculate the probability using our transition matrix $G$, and then divide by the number of corners (in this case 4).
+
+\newpage
+
+\section{Problem 6.5}
+
+A symmetric matrix $M \in \R^{n\times n}$ is positive semi-definite if, for any $x \in \R^n$,
+    $$x^\top M x \geq 0.$$
+    We say furthermore that $M$ is postive definite if $x^\top M x > 0$ for any non-zero vector.\\
+
+a) Show that $M$ is positive semi-definite if and only if its eigenvalues are non-negative. \\
+
+Since the Matrix $M$ is a symmetric square matrix, it follows that $M$ has an eigen decomposition of such that $M = PDP^T$. where $P$ is the orthonormal basis that consists of the eigenvalues of $M$ and $D$ is a diagonal matrix who's entries correspond to the ordered pair of eigenvalues for the eigenvectors in $P$. Let the vector $y \in \R^n$ and $y$ be the result of a matrix-vector product between $P$ and $x$ such that $y=Px$.
+
+\begin{equation}
+    \begin{split}
+        x^TMx&= x^T(P^TDP) \\
+        x^T(P^TDP)&=(x^TP^T)D(Px) \\
+        (x^TP^T)D(Px)&=y^TDy \\
+        y^TDy&=\sum_{i=1}^n\lambda_iy^2_i \qed
+    \end{split}
+\end{equation}
+
+We derived a summation which we obtained by showing that $x^TMx$ results in the dot product between a vector $y$ and $y\lambda$ (like so: $\langle y, \lambda y \rangle $). Since the $y^2$ in our summation can never be negative, the only possible way for our sum to be negative is if we have negative eigenvalues. If we only have positive eigenvalues, the result of the summation will always be positive, since our vector $x$ is non zero, thus $y$ must be too, and therefore $x^TAx>0$ . If our eigenvalues are equal to 0, it is the only case where our transformation $x^TAx=0$. Thus, if we have non-negative eigenvalues, $x^TAx \geq 0$ \\
+
+
+b) Give a necessary and sufficient condition on the spectrum of $M$ for the matrix to be definite positive. \\
+
+I touched on this in my previous answer, but for $x^TAX>0$, aka the necessary and sufficient condition on the spectrum of $M$ for our matrix to be definite positive, is that all of the eigenvalues associated with $M$ are positive (which means positive and non-zero). If the matrix $M$ has an eigenvalue of 0, there will at least one eigenvector that corresponds to the eigenvalue $\labmda =0$ (the eigenvector will be the null space in this case). If that is the case, there are matrices for where $x^TAx = 0$ and $M$ won't be positive definite. Therefore, for $M$ to be positive definite, it must have all positive eigenvalues.
+\end{document}
