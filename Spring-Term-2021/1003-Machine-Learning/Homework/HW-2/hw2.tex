@@ -9,20 +9,20 @@
 \usepackage{minted}
 \input{math_commands}
 
-ewcommand{\wipcom}[1]{\textcolor{red}{WIP: #1}}
-ewcommand{\sol}[1]{\textcolor{gray}{Solution: #1}}
-ewcommand{yuparagrah}[1]{\textcolor{nyupurple}{\large #1}}
+\newcommand{\wipcom}[1]{\textcolor{red}{WIP: #1}}
+\newcommand{\sol}[1]{\textcolor{gray}{Solution: #1}}
+\newcommand{\nyuparagrah}[1]{\textcolor{nyupurple}{\large #1}}
 
 \pagestyle{empty} \addtolength{\textwidth}{1.0in}
 \addtolength{\textheight}{0.5in} \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\evensidemargin}{0.5in}
-ewcommand{\ruleskip}{\bigskip\hrule\bigskip}
-ewcommand{odify}[1]{{\sc #1}} ewcommand{\points}[1]{{\textbf{[#1
+\newcommand{\ruleskip}{\bigskip\hrule\bigskip}
+\newcommand{\nodify}[1]{{\sc #1}} \newcommand{\points}[1]{{\textbf{[#1
 points]}}}
 
-ewcommand{\bitem}{\begin{list}{$\bullet$}%
+\newcommand{\bitem}{\begin{list}{$\bullet$}%
 {\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}%
-\setlength{\rightmargin}{0pt}}} ewcommand{\eitem}{\end{list}}
+\setlength{\rightmargin}{0pt}}} \newcommand{\eitem}{\end{list}}
 
 \definecolor{nyupurple}{RGB}{134, 0, 179}
 \setlength{\parindent}{0pt} \setlength{\parskip}{0.5ex}
@@ -30,7 +30,7 @@ ewcommand{\bitem}{\begin{list}{$\bullet$}%
 \DeclareUnicodeCharacter{2212}{-}
 
 \begin{document}
-ewcounter{saveenum}
+\newcounter{saveenum}
 
 \pagestyle{myheadings} \markboth{}{\color{nyupurple} DS-GA-1003 - Spring 2022}
 
@@ -64,7 +64,32 @@ Consider a full rank $N \times d$ data matrix $X$ $(N > d)$ where the training l
     \textrm{Training Error} = \frac{1}{N} \Big|\Big| \Big( X(X^TX)^{-1}X^T - I \Big) \epsilon \Big| \Big|^2_2
     $$
     where $\epsilon \sim \mathcal{N}(0, \sigma^2 I_n)$ and training error is defined as $\frac{1}{N}||X\hat{b} - y||_2^2$. 
-
+\subitem
+Let $A = X(X^TX)^{-1}X^T$, and $y=Xb+\epsilon$ (note that this is $b$ and not $\hat{b}$. Also note the following property:
+\begin{equation}
+    \begin{split}
+        A &= A^2 \\
+        X(X^TX)^{-1}X^T &= X(X^TX)^{-1}X^T X(X^TX)^{-1}X^T \\
+        X(X^TX)^{-1}X^T &= X(X^TX)^{-1}X^T
+    \end{split}
+\end{equation}
+ Which shows that $A$ is symmetric with eigenvalues strictly equal to $1$ or $0$.
+ 
+ To show the equivalency we begin by doing the following manipulations:
+\begin{equation}
+\begin{split}
+    \frac{1}{N} \Big|\Big| \Big( X(X^TX)^{-1}X^T - I \Big) \epsilon \Big| \Big|^2_2 &= \frac{1}{N}||X\hat{b} - y||_2^2 \\
+    &= \frac{1}{N}||Ay - y||_2^2 \\
+    &= \frac{1}{N}||(A- I)y||_2^2 \\
+    &= \frac{1}{N}||(A-I)(Xb+\epsilon)||_2^2 \\
+    &= \frac{1}{N}||(A-I)(A + \epsilon)||_2^2 \\
+    &= \frac{1}{N}|| A^2 - A + A\epsilon - I\epsilon)||_2^2 \\
+    &= \frac{1}{N}||A\epsilon - I\epsilon||_2^2 \\
+    &= \frac{1}{N}||(A-I)\epsilon||_2^2 \\
+    &= \frac{1}{N} \Big|\Big| \Big( X(X^TX)^{-1}X^T - I \Big) \epsilon \Big| \Big|^2_2
+\end{split}
+\end{equation}
+We firstly substituted our definition for $A$, then expanded the definition of the Euclidean norm via dot product, foiled the inside terms and manipulated the expression accordingly, resulting in the desired equivalency.
   \item Show that the expectation of the training error can be expressed solely in terms of \textbf{only} $N, d, \sigma$ as:
   $$
   E \Big[ \frac{1}{N} \Big|\Big| \Big( X(X^TX)^{-1}X^T - I \Big) \epsilon \Big| \Big|^2_2 \Big] = (N-d)\sigma^2
@@ -76,19 +101,54 @@ Consider a full rank $N \times d$ data matrix $X$ $(N > d)$ where the training l
     \item If $X$ is full rank, then what is the rank of $A$? What is the eigenmatrix of A?
   \end{itemize}
   
+  \subitem
+    We have shown that:
+
+    \begin{equation}
+    \begin{split}
+    \textrm{Training Error} &= \frac{1}{N} \Big|\Big| \Big( A - I \Big) \epsilon \Big| \Big|^2_2 \\
+    &= \frac{1}{N} \langle( A - I)\epsiolon, (A-I)\epsiolon)\rangle \\
+    &= \frac{1}{N} (A^2-2A+I)*\epsilon^2 \\
+    &= \frac{1}{N} \epsilon^T*(I_N-A)*\epsilon
+       \end{split} 
+    \end{equation}
+    Therefore we can take the expectation and manipulate as such:
+    \begin{equation}
+        \begin{split}
+             E(\textrm{Training Error}) &=  \frac{1}{N} E(\epsilon^2*I_N) - E(\epsilon^T * A * \epsilon) \\
+    &= \frac{1}{N} [E(\Sigma_{i=1}^{n}\epsilon^2) - E(\epsilon^T * A * \epsilon)] \\
+    &= \frac{1}{N}[(\Sigma_{i=1}^{n}E(\epsilon^2)) - E(\epsilon^T * A * \epsilon)] \\
+    &= \frac{1}{N}[n\sigma^2 - E(\epsilon^T * A * \epsilon) \\
+    &= \frac{1}{N}[n\sigma^2 - (\Sigma_{i=1}^{d}E(\epsilon^2) - (\Sigma_{i=d+1}^{n}E(0))] \\
+    &= \frac{(N-d)\sigma^2}{N}
+        \end{split}
+    \end{equation}
+   
+ 
+  
+  For this exercise, we begun by applying the second hint that $A^2 = A$, then we utilized the expectation to find the expected training error. Then, using linearity of expectations, we can take the sum of expectations.
+  Finally, using the fact that $A$ is square symmetric, and due to the Spectral Theorem can be expressed as $A=PDP^T$, we utilize the fact that the eigenvalues, can be only $1$ or $0$, and since the rank of $A$ is equal to $d$, then the eigenmatrix, $D$ will have $1$s in the diagonal from i equals 1 to d, and eigenvalues of 0 from d+1 to n diagonals. Using the properties of the quadratic form, we know that the expression $\epsilon^T A \epsilon$ is the same as $Tr(A) \times \epsilon^2$.
+  
+  
   \item From this result, give a reason as to why the training error is very low when $d$ is close to $N$ i.e. when we overfit the data. 
+  \subitem
+  As we increase the number of features we include in our model, we are essentially increasing the amount of terms in our prediction function. With more terms, we can fit the noise present in our ground truth function better. This overfitting process reduces training error (and without a doubt would increase test error). 
+  
+  In other words, as $d$ approaches $N$ the numerator in the equation we proved in part 2 ($\frac{(N-d)\sigma}{N}$) approaches $0$. When that occurs the total training error becomes 0.
    
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
+\newpage
+
 \section{\large Gradient descent for ridge(less) linear regression}
 
-yuparagrah{\bf Dataset} 
+\nyuparagrah{\bf Dataset} 
 
 We have provided you with a file called \texttt{ridge\_regression\_dataset.csv}. Columns \texttt{x0} through \texttt{x47} correspond to the input and column \texttt{y} corresponds to the output. We are trying to fit the data using a linear model and gradient based methods. Please also check the supporting code in \texttt{skeleton\_code.py}. Throughout this problem, we refer to particular blocks of code to help you step by step. 
 
 
-yuparagrah{\bf Feature normalization}
+\nyuparagrah{\bf Feature normalization}
 When feature values differ greatly, we can get much slower rates of
 convergence of gradient-based algorithms. Furthermore, when we start
 using regularization, features with
@@ -114,7 +174,7 @@ in the training set.
 
 At the end of the skeleton code, the function \texttt{load\_data} loads, split into a training and test set, and normalize the data using your \texttt{feature\_normalization}.
 
-yuparagrah{\bf Linear regression}
+\nyuparagrah{\bf Linear regression}
 
 In linear regression, we consider the hypothesis space of linear functions
 $h_{\theta}:\reals^{d}\to\reals$, where
@@ -152,11 +212,32 @@ practice, since you can use numpy (or more generally, an efficient
 numerical linear algebra library) to implement these matrix/vector
 operations orders of magnitude faster than naively implementing with
 loops in Python.} 
+\subitem
+This is a relatively easy task, as our design matrix $X$ can be multiplied by a vector of weights, $\theta$ to calculate our predicted $\hat{y}$ values, where $\hat{y} \in \R^{m\times1}$. Therefore, our loss function can be re-expressed as the following simple linear algebra expression:
+
+$$J(\theta) =\frac{1}{m}|| X\theta -y ||_2^2$$
 
 \item Write down an expression for the gradient of $J$ without using an explicit summation sign. 
+\subitem
+The gradient of our loss function is defined as the vector of partial derivatives with respect to $\theta$. It can be expressed as follows:
+\begin{equation}
+    \begin{split}
+        \nabla J(\theta) &= \frac{\partial J}{\partial \theta} \frac{1}{m}|| X\theta -y ||_2^2 \\
+        &= \frac{\partial J}{\partial \theta} (\frac{1}{m}(\theta^TX^TX\theta + y^Ty - 2\theta^TX^Ty)) \\
+        &= \frac{2}{m}(X^TX\theta - X^Ty)
+    \end{split}
+\end{equation}
+Therefore:
+$$
+\nabla J(\theta) = \frac{\partial J}{\partial \theta} = \frac{2}{m}(X^TX\theta - X^Ty)
+$$
 
 \item Write down the expression for updating $\theta$ in the gradient descent
 algorithm for a step size $\eta$.
+\subitem
+Our algorithm to update $\theta$ is rather simple. To calculate the next theta, iteration $i+1$, we take the $\theta$ from iteration $i$ and subtract the gradient that we calculated above, scaled for some step size $\eta$:
+$$\theta^{i+1} = \theta^i - \eta \nabla J(\theta^i) = \theta^i - \eta (\frac{2}{m}(X^TX\theta^i - X^Ty)))$$
+
 
 \item Modify the function \texttt{compute\_square\_loss}, to compute $J(\theta)$
 for a given $\theta$. You might want to create a small dataset for
@@ -170,7 +251,7 @@ returns the correct value.
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
-yuparagrah{\bf Gradient checker}
+\nyuparagrah{\bf Gradient checker}
 
 We can numerically check the
 gradient calculation. If $J:\reals^{d}\to\reals$ is differentiable,
@@ -199,7 +280,7 @@ so} which can work for any objective function.
 \end{enumerate}
 You should be able to check that the gradients you computed above remain correct throughout the learning below.
 
-yuparagrah{\bf Batch gradient descent}
+\nyuparagrah{\bf Batch gradient descent}
 
 We will now finish the job of
 running regression on the training set. 
@@ -217,11 +298,13 @@ each step size. Briefly summarize your findings.
 
 \item For the learning rate you selected above, plot the average test loss as a function of the iterations. You should observe overfitting: the test error first decreases and then increases.
 
+\newpage 
+
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
 \vspace{0.3cm}
-yuparagrah{\bf Ridge Regression}
+\nyuparagrah{\bf Ridge Regression}
 
 We will add $\ell_2$ regularization to linear regression. When we have a large number of features compared to instances, regularization
 can help control overfitting. \emph{Ridge regression} is linear regression
@@ -240,6 +323,18 @@ as well as the other parameters. Sometimes it is preferable to treat this term s
 \item Compute the gradient of $J_\lambda(\theta)$ and write down the expression
 for updating $\theta$ in the gradient descent algorithm. (Matrix/vector
 expression, without explicit summation)
+\subitem 
+Gradient of computing $J_\lambda(\theta)$:
+To begin, lets derive the gradient of ridge regression using linear algebra, similarly with how we did to problem 6.
+\begin{equation}
+    \begin{split}
+        J_\lambda(\theta) &= \frac{1}{m} ||X\theta - y||_2^2 + \lambda \theta^T\theta \\
+        \nabla J_\lambda(\theta) &= \frac{\partial J}{\partial \theta} (\frac{1}{m}(\theta^TX^TX\theta + y^Ty - 2\theta^TX^Ty) + \lambda \theta^T\theta) \\ 
+        \nabla J_\lambda(\theta) &= \frac{2}{m} (X^TX\theta - X^Ty) + 2\lambda \theta
+    \end{split}
+\end{equation}
+Updating the gradient descent algorithm with our new gradient:
+$$\theta^{i+1} = \theta^i - \eta \nabla J(\theta^i) = \theta^i - \eta (\frac{2}{m} (X^TX\theta^i - X^Ty) + 2\lambda \theta^i)))$$
 \item Implement \texttt{compute\_regularized\_square\_loss\_gradient.}
 \item Implement \texttt{regularized\_grad\_descent.}
 \setcounter{saveenum}{\value{enumi}}
@@ -266,11 +361,15 @@ Is the value $\lambda$ you would select with early stopping the same as before?
 
 
 \item What $\theta$ would you select in practice and why?
+\subitem
+In practice, it is best to select the $\theta$ that minimizes testing error the most out of all $\theta$ considered. The reason for this is that we want our model to generalize the best to real world data, and our testing split is the best indicator during an experiment of how the model might perform once deployed. In our example, it seems that the value of $10^{-2}$ minimized the testing error the most, so that is the one we would choose to use. 
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
+\newpage
+
 \vspace{0.3cm}
-yuparagrah{\bf Stochastic Gradient Descent (SGD) (optional)}
+\nyuparagrah{\bf Stochastic Gradient Descent (SGD) (optional)}
 
 When the training data set is very large, evaluating the
 gradient of the objective function can take a long time, since it
@@ -313,6 +412,7 @@ $$
         J_{\lambda}(\theta) = J_{\lambda}(\theta)=\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}(\bs x_{i})-y_{i}\right)^{2}+\lambda\theta^{T}\theta =  \frac{1}{m}\sum_{i=1}^{m}f_{i}(\theta)
 $$
 And thus, showing the equivalency.
+
 \item Show that the stochastic gradient $\del_\theta f_{i}(\theta)$, for $i$
 chosen uniformly at random from $\{1,\ldots,m\}$, is an \emph{unbiased estimator} of $\del_\theta J_\lambda(\theta)$. In other words, show that $\ex\left[\del f_{i}(\theta)\right]=\del J_\lambda(\theta)$
 for any $\theta$. It will be easier to prove
@@ -343,12 +443,13 @@ After all that we have:
     
     $$\mathbb{E}[\nabla f_{i}(\theta)] = \nabla J_\lambda(\theta)$$ 
  
-   
+
 \item Write down the update rule for $\theta$ in SGD for the ridge
 regression objective function.
 \subitem
 We simply rewrite the way we would normally update the theta during ridge regression, but instead of using the whole design matrix $X$ and labels, $y$, we use the subset selected for SGD: the $j^{th}$ row of $X$ and the $j^{th}$ observation in our target vector, $y$. For each iteration $i$ of our stochastic gradient descent, we update $\theta$ as follows:
-$$\theta^{i+1} = \theta^i - \eta(2(X^T_j\theta^i - y_j)x_j) + \lambda \theta^i$$
+$$\theta^{i+1} = \theta^i - \eta \nabla f_j(\theta^i) = \theta^i - \eta (\frac{2}{m} (X_j^TX_j\theta^i - X_j^Ty_j) + 2\lambda \theta^i)))$$
+
 \item Implement \texttt{stochastic\_grad\_descent}. 
 
 \item Use SGD to find $\theta_{\lambda}^{*}$ that minimizes the ridge regression
@@ -389,6 +490,8 @@ to the minimizer.
 {\bf Acknowledgement:} This problem set is based on assignments developed by David Rosenberg of NYU and Bloomberg.
 
 
+\newpage 
+
 \section{\large Image classification with regularized logistic regression}
 
 
@@ -413,7 +516,6 @@ This time we will use the logistic loss instead of the squared loss. Instead of 
   \[
     L(\theta) = \frac 1 {2 m} \sum_{i=1}^m  (1 + y_i) \log ( 1 + e^{- h_{\theta, b}(\bs x_i)}) +  (1 - y) \log(1 + e^{h_{\theta, b}(\bs x_i)}).
     \]
-\subitem
 We know from Lecture 2 that the definition of the logistic log function is as follows:
 $$ L(\theta) = \frac{1}{n}\sum_i^{n}ln(1 +e^{-m}) $$
 
@@ -432,24 +534,31 @@ $$ L(\theta) = \frac{1}{n}\sum_i^{n}ln(1 +e^{-m}) $$
         \begin{split}
             L(\theta) &= \frac{1}{2m}\sum_i^{m}(1+-1)*ln(1 +e^{h_{\theta, b}(x_i)}) + (1+1)*ln(1+ e^{h_{\theta, b}(x_i)}) \\
             &=  \frac{1}{2m}\sum_i^{m}(0)*ln(1 +e^{h_{\theta, b}(x_i)}) + 2*ln(1+e^{h_{\theta, b}(x_i)}) \\
-            &= \frac{1}{2m}\sum_i^{m} 2*ln(1+e^{h_{\theta, b}(x_i)}) \\
-         &= \frac{1}{m}\sum_i^{m} ln(1+e^{h_{\theta, b}(x_i)})
+            &= \frac{1}{2m}\sum_i^{m} 2*ln(1+e^{-h_{\theta, b}(x_i)}) \\
+         &= \frac{1}{m}\sum_i^{m} ln(1+e^{-m})
         \end{split}
     \end{equation}
     After doing the above manipulations, we arrive at the original logistic loss function, thus shoving the equivalency between the two when $y = -1$
     
     Now for our other case, when $y_i = 1$: 
+    
     \begin{equation}
         \begin{split}
             L(\theta) &= \frac{1}{2m}\sum_i^{m}(1+1)*ln(1 +e^{-h_{\theta, b}(x_i)}) + (1-1)*ln(1+ e^{h_{\theta, b}(x_i)}) \\
     &= \frac{1}{2m}\sum_i^{m}2*ln(1 +e^{-h_{\theta, b}(x_i)}) + 0*ln(1+e^{h_{\theta, b}(x_i)}) \\
     &= \frac{1}{2m}\sum_i^{m}2*ln(1 +e^{-h_{\theta, b}(x_i)}) \\
-    &= \frac{1}{m}\sum_i^{m} ln(1+e^{-h_{\theta, b}(x_i)})
-        \end{split}
+    &= \frac{1}{m}\sum_i^{m} ln(1+e^{-m})
+    \end{split}
     \end{equation}
-     And again, we arrive at our original logistic loss function, thus showing equilaency between the two functions when $y=1$. Since the only two cases we can have are $y=1,y=-1$, we have proven the equivalency between the two functions.
+    
+     And again, we arrive at our original logistic loss function, thus showing equivalency between the two functions when $y=1$. Since the only two cases we can have are $y=1,y=-1$, we have proven the equivalency between the two functions.
   \item What will become the loss function if we regularize the coefficients of $\theta$ with an $\ell_1$ penalty using a regularization parameter $\alpha$ ?
-  
+  \subitem
+  If we regularize the loss function similarly to how we have done in previos problems like Ridge Regression, our Logistic Loss Function would change accordignly:
+  $$
+  L(\theta) = \frac{1}{n}\sum_i^{n}ln(1 +e^{-m}) + \alpha ||\theta||_1 
+  $$
+  Where $||\theta||_1$ is the $\ell1$ norm of $\theta$ with regularization parameter $\alpha$.
 
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
@@ -459,7 +568,7 @@ We are going to use the module \texttt{SGDClassifier} from scikit learn. In the 
 \begin{enumerate}
 \setcounter{enumi}{\value{saveenum}}
   \item To evaluate the quality of our model we will use the classification error, which corresponds to the fraction of incorrectly labeled examples. For a given sample, the classification error is 1 if no example was labeled correctly and 0 if all examples were perfectly labeled. 
-  Using the method \texttt{clf.predict()} from the classifier write a function that takes as input an \texttt{SGDClassifier} which we will call \texttt{clf}, a design matrix \texttt{X} and a target vector \texttt{y} and returns the classification error. You should check that your function returns the same value as ewline \texttt{1 - clf.score(X, y)}.
+  Using the method \texttt{clf.predict()} from the classifier write a function that takes as input an \texttt{SGDClassifier} which we will call \texttt{clf}, a design matrix \texttt{X} and a target vector \texttt{y} and returns the classification error. You should check that your function returns the same value as \newline \texttt{1 - clf.score(X, y)}.
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
@@ -479,6 +588,7 @@ To speed up computations we will subsample the data. Using the function \texttt{
   
   \item What can you note about the pattern in $\theta$? What can you note about the effect of the regularization?
 
+  
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
