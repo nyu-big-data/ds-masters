@@ -9,20 +9,20 @@
 \usepackage{minted}
 \input{math_commands}
 
-\newcommand{\wipcom}[1]{\textcolor{red}{WIP: #1}}
-\newcommand{\sol}[1]{\textcolor{gray}{Solution: #1}}
-\newcommand{\nyuparagrah}[1]{\textcolor{nyupurple}{\large #1}}
+ewcommand{\wipcom}[1]{\textcolor{red}{WIP: #1}}
+ewcommand{\sol}[1]{\textcolor{gray}{Solution: #1}}
+ewcommand{yuparagrah}[1]{\textcolor{nyupurple}{\large #1}}
 
 \pagestyle{empty} \addtolength{\textwidth}{1.0in}
 \addtolength{\textheight}{0.5in} \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\evensidemargin}{0.5in}
-\newcommand{\ruleskip}{\bigskip\hrule\bigskip}
-\newcommand{\nodify}[1]{{\sc #1}} \newcommand{\points}[1]{{\textbf{[#1
+ewcommand{\ruleskip}{\bigskip\hrule\bigskip}
+ewcommand{odify}[1]{{\sc #1}} ewcommand{\points}[1]{{\textbf{[#1
 points]}}}
 
-\newcommand{\bitem}{\begin{list}{$\bullet$}%
+ewcommand{\bitem}{\begin{list}{$\bullet$}%
 {\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}%
-\setlength{\rightmargin}{0pt}}} \newcommand{\eitem}{\end{list}}
+\setlength{\rightmargin}{0pt}}} ewcommand{\eitem}{\end{list}}
 
 \definecolor{nyupurple}{RGB}{134, 0, 179}
 \setlength{\parindent}{0pt} \setlength{\parskip}{0.5ex}
@@ -30,7 +30,7 @@ points]}}}
 \DeclareUnicodeCharacter{2212}{-}
 
 \begin{document}
-\newcounter{saveenum}
+ewcounter{saveenum}
 
 \pagestyle{myheadings} \markboth{}{\color{nyupurple} DS-GA-1003 - Spring 2022}
 
@@ -83,12 +83,12 @@ Consider a full rank $N \times d$ data matrix $X$ $(N > d)$ where the training l
 
 \section{\large Gradient descent for ridge(less) linear regression}
 
-\nyuparagrah{\bf Dataset} 
+yuparagrah{\bf Dataset} 
 
 We have provided you with a file called \texttt{ridge\_regression\_dataset.csv}. Columns \texttt{x0} through \texttt{x47} correspond to the input and column \texttt{y} corresponds to the output. We are trying to fit the data using a linear model and gradient based methods. Please also check the supporting code in \texttt{skeleton\_code.py}. Throughout this problem, we refer to particular blocks of code to help you step by step. 
 
 
-\nyuparagrah{\bf Feature normalization}
+yuparagrah{\bf Feature normalization}
 When feature values differ greatly, we can get much slower rates of
 convergence of gradient-based algorithms. Furthermore, when we start
 using regularization, features with
@@ -114,7 +114,7 @@ in the training set.
 
 At the end of the skeleton code, the function \texttt{load\_data} loads, split into a training and test set, and normalize the data using your \texttt{feature\_normalization}.
 
-\nyuparagrah{\bf Linear regression}
+yuparagrah{\bf Linear regression}
 
 In linear regression, we consider the hypothesis space of linear functions
 $h_{\theta}:\reals^{d}\to\reals$, where
@@ -170,7 +170,7 @@ returns the correct value.
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
-\nyuparagrah{\bf Gradient checker}
+yuparagrah{\bf Gradient checker}
 
 We can numerically check the
 gradient calculation. If $J:\reals^{d}\to\reals$ is differentiable,
@@ -199,7 +199,7 @@ so} which can work for any objective function.
 \end{enumerate}
 You should be able to check that the gradients you computed above remain correct throughout the learning below.
 
-\nyuparagrah{\bf Batch gradient descent}
+yuparagrah{\bf Batch gradient descent}
 
 We will now finish the job of
 running regression on the training set. 
@@ -221,7 +221,7 @@ each step size. Briefly summarize your findings.
 \end{enumerate}
 
 \vspace{0.3cm}
-\nyuparagrah{\bf Ridge Regression}
+yuparagrah{\bf Ridge Regression}
 
 We will add $\ell_2$ regularization to linear regression. When we have a large number of features compared to instances, regularization
 can help control overfitting. \emph{Ridge regression} is linear regression
@@ -270,7 +270,7 @@ Is the value $\lambda$ you would select with early stopping the same as before?
 \end{enumerate}
 
 \vspace{0.3cm}
-\nyuparagrah{\bf Stochastic Gradient Descent (SGD) (optional)}
+yuparagrah{\bf Stochastic Gradient Descent (SGD) (optional)}
 
 When the training data set is very large, evaluating the
 gradient of the objective function can take a long time, since it
@@ -304,15 +304,51 @@ J_{\lambda}(\theta)=\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}(\bs x_{i})-y_{i}\r
 can be written in the form $J_\lambda(\theta)=\frac{1}{m}\sum_{i=1}^{m}f_{i}(\theta)$
 by giving an expression for $f_{i}(\theta)$ that makes the two expressions
 equivalent.
-
+\subitem
+This is can be simply shown by substituting our definition of our loss function, and calculating its risk. Our Ridge Regression Least squares loss function for a single point, $(x_i,y_i)$ is defined as: 
+$$
+        f_i(\theta) &= (h_{\theta}(x_{i})-y_{i})^{2}+\lambda \theta^{T}\theta $$
+Taking a batch of size $m$ ($m$ denoting the number of data points used in SGD) we have:
+$$
+        J_{\lambda}(\theta) = J_{\lambda}(\theta)=\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}(\bs x_{i})-y_{i}\right)^{2}+\lambda\theta^{T}\theta =  \frac{1}{m}\sum_{i=1}^{m}f_{i}(\theta)
+$$
+And thus, showing the equivalency.
 \item Show that the stochastic gradient $\del_\theta f_{i}(\theta)$, for $i$
 chosen uniformly at random from $\{1,\ldots,m\}$, is an \emph{unbiased estimator} of $\del_\theta J_\lambda(\theta)$. In other words, show that $\ex\left[\del f_{i}(\theta)\right]=\del J_\lambda(\theta)$
 for any $\theta$. It will be easier to prove
 this for a general $J(\theta)=\frac{1}{m}\sum_{i=1}^{m}f_{i}(\theta)$,
 rather than the specific case of ridge regression. You can start by
 writing down an expression for $\ex\left[\del f_{i}(\theta)\right]$
+\subitem
+Firstly, we start with the definition of the Ridge Regression gradient:
+$$\nabla f_{i}(\theta) = \frac{2}{m} (X_i^TX_i\theta - X^T_iy_i) + 2\lambda \theta$$
+    
+We can show that the SGD is an unbiased estimator of the full batch gradient by first illustrating what happens when we plug in only $1$ data point into our SGD gradient calculator. Note that the probability of selecting any one individual data point is $P(x_i=i)=\frac{1}{m}$.
+
+    $$\nabla f_{i}(\theta) = 2(X_i^TX_i\theta - X_i^Ty_i) + 2\lambda \theta$$
+We can then apply the expected value to this function. Adding in the probability of selecting any one of our $m$ data points for each $m$ datapoint we can show the equivalency:
+\begin{equation}
+    \begin{split}
+       \mathbb{E}[\nabla f_{i}(\theta)] &= E[2(X_i^TX_i\theta - X_i^Ty_i) + 2\lambda \theta] \\
+       &= 2\times \frac{1}{m} \times \sum_{i=1}^m(X_i^TX_i\theta - X_i^Ty_i) * P(X_i = i) + 2\lambda \theta\\
+       &= \frac{2}{m}(X^TX\theta - X^Ty) + 2\lambda \theta 
+    \end{split}
+\end{equation}
+This proves the equivalency as:
+$$ \frac{2}{m}(X^TX\theta - X^Ty) + 2\lambda \theta = \nabla J_\lambda(\theta)$$
+
+Which we accomplished by noting that the probability of selecting any one data point $m$ is:
+$$2(X_i^TX_i\theta - X_i^Ty_i) * P(X_i = i)$$
+After all that we have:
+    
+    $$\mathbb{E}[\nabla f_{i}(\theta)] = \nabla J_\lambda(\theta)$$ 
+ 
+   
 \item Write down the update rule for $\theta$ in SGD for the ridge
 regression objective function.
+\subitem
+We simply rewrite the way we would normally update the theta during ridge regression, but instead of using the whole design matrix $X$ and labels, $y$, we use the subset selected for SGD: the $j^{th}$ row of $X$ and the $j^{th}$ observation in our target vector, $y$. For each iteration $i$ of our stochastic gradient descent, we update $\theta$ as follows:
+$$\theta^{i+1} = \theta^i - \eta(2(X^T_j\theta^i - y_j)x_j) + \lambda \theta^i$$
 \item Implement \texttt{stochastic\_grad\_descent}. 
 
 \item Use SGD to find $\theta_{\lambda}^{*}$ that minimizes the ridge regression
@@ -377,7 +413,41 @@ This time we will use the logistic loss instead of the squared loss. Instead of 
   \[
     L(\theta) = \frac 1 {2 m} \sum_{i=1}^m  (1 + y_i) \log ( 1 + e^{- h_{\theta, b}(\bs x_i)}) +  (1 - y) \log(1 + e^{h_{\theta, b}(\bs x_i)}).
     \]
+\subitem
+We know from Lecture 2 that the definition of the logistic log function is as follows:
+$$ L(\theta) = \frac{1}{n}\sum_i^{n}ln(1 +e^{-m}) $$
 
+    where $n$ is the number of data points and $ m =  y_i h_{\theta, b}(x_i) $. Using our definition above, and substituting in our margin for $m$ we have the following statement: 
+    $$ L(\theta) = \frac{1}{m}\sum_i^{m}ln(1 +e^{-y_ih_{\theta, b}(x_i)}) \space \text{ where } \space y \space \in {-1,1}$$
+    Please note: now the variable $m$ denotes the number of datapoints, and we no longer use the indicator variable $n$. 
+    
+    We can prove the equivalency by doing a few manipulations. Firstly, lets multiply our statement by $\frac{2}{2}$ to get the following:
+    
+    $$ L(\theta) = \frac{1}{2m}\sum_i^{m} 2*ln(1 +e^{-y_ih_{\theta, b}(x_i)})$$
+    
+    Now lets explore what happens to our equation when $y_i$ takes it's two possible values,  (when $y_i \in [-1,1]$). 
+    
+    Firstly, lets try substituting $y_i$ = -1 to illustrate the equivalency we need to prove
+    \begin{equation}
+        \begin{split}
+            L(\theta) &= \frac{1}{2m}\sum_i^{m}(1+-1)*ln(1 +e^{h_{\theta, b}(x_i)}) + (1+1)*ln(1+ e^{h_{\theta, b}(x_i)}) \\
+            &=  \frac{1}{2m}\sum_i^{m}(0)*ln(1 +e^{h_{\theta, b}(x_i)}) + 2*ln(1+e^{h_{\theta, b}(x_i)}) \\
+            &= \frac{1}{2m}\sum_i^{m} 2*ln(1+e^{h_{\theta, b}(x_i)}) \\
+         &= \frac{1}{m}\sum_i^{m} ln(1+e^{h_{\theta, b}(x_i)})
+        \end{split}
+    \end{equation}
+    After doing the above manipulations, we arrive at the original logistic loss function, thus shoving the equivalency between the two when $y = -1$
+    
+    Now for our other case, when $y_i = 1$: 
+    \begin{equation}
+        \begin{split}
+            L(\theta) &= \frac{1}{2m}\sum_i^{m}(1+1)*ln(1 +e^{-h_{\theta, b}(x_i)}) + (1-1)*ln(1+ e^{h_{\theta, b}(x_i)}) \\
+    &= \frac{1}{2m}\sum_i^{m}2*ln(1 +e^{-h_{\theta, b}(x_i)}) + 0*ln(1+e^{h_{\theta, b}(x_i)}) \\
+    &= \frac{1}{2m}\sum_i^{m}2*ln(1 +e^{-h_{\theta, b}(x_i)}) \\
+    &= \frac{1}{m}\sum_i^{m} ln(1+e^{-h_{\theta, b}(x_i)})
+        \end{split}
+    \end{equation}
+     And again, we arrive at our original logistic loss function, thus showing equilaency between the two functions when $y=1$. Since the only two cases we can have are $y=1,y=-1$, we have proven the equivalency between the two functions.
   \item What will become the loss function if we regularize the coefficients of $\theta$ with an $\ell_1$ penalty using a regularization parameter $\alpha$ ?
   
 
@@ -389,7 +459,7 @@ We are going to use the module \texttt{SGDClassifier} from scikit learn. In the 
 \begin{enumerate}
 \setcounter{enumi}{\value{saveenum}}
   \item To evaluate the quality of our model we will use the classification error, which corresponds to the fraction of incorrectly labeled examples. For a given sample, the classification error is 1 if no example was labeled correctly and 0 if all examples were perfectly labeled. 
-  Using the method \texttt{clf.predict()} from the classifier write a function that takes as input an \texttt{SGDClassifier} which we will call \texttt{clf}, a design matrix \texttt{X} and a target vector \texttt{y} and returns the classification error. You should check that your function returns the same value as \newline \texttt{1 - clf.score(X, y)}.
+  Using the method \texttt{clf.predict()} from the classifier write a function that takes as input an \texttt{SGDClassifier} which we will call \texttt{clf}, a design matrix \texttt{X} and a target vector \texttt{y} and returns the classification error. You should check that your function returns the same value as ewline \texttt{1 - clf.score(X, y)}.
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
@@ -409,7 +479,6 @@ To speed up computations we will subsample the data. Using the function \texttt{
   
   \item What can you note about the pattern in $\theta$? What can you note about the effect of the regularization?
 
-  \item This is a test :)
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
