@@ -98,6 +98,15 @@ $f(\bs x)=\max_{i=1,\ldots,,m}f_{i}(\bs x)$.
 % \]
 Let $k$ be any index for which $f_{k}(\bs x)=f(\bs x)$, and choose $g\in\partial f_{k}((\bs x)$ (a convex function on $\mathbb{R}^{d}$ has
 a non-empty subdifferential at all points). Show that $g\in\partial f(\bs x)$.
+\subitem 
+\begin{equation}
+\begin{split}
+    f(z) &\geq f(x) + g^T(z-x) \\ 
+    f_k(z) &\geq f_k(x) + g_k^T(z-x) \\
+    f(z) \geq f_k(z) &\geq f_k(x) + g_k^T(z-x) \\
+    f(z) &\geq  f_k(x) + g_k^T(z-x) 
+\end{split}
+\end{equation}
 
 \item Give a subgradient of the hinge loss objective
 % \[
@@ -151,7 +160,14 @@ While termination condition not met\tabularnewline
 then this objective function has the same expected value
 as the full SVM objective function.}: $J_{i}(\bs w)=\frac{\lambda}{2}\|\bs w\|^{2}+\max\left\{ 0,1-y_{i}\bs w^{T}\bs x_{i}\right\} $.
 The function $J_{i}(\bs w)$ is not differentiable everywhere. Specify where the gradient of $J_{i}(w)$ is not defined. Give an expression for the gradient where it is defined.\\
-
+\subitem
+The gradient is defined and not defined by the following piece-wise expression:
+$$
+\begin{cases}
+Defined & \text{when } y_{i}\bs w^{T}x_i \neq 1 \\
+Not-Defined & \text{when } y_{i}\bs w^{T}x_i = 1
+\end{cases}
+$$
 \item Show that a subgradient of $J_{i}(w)$ is given by 
 \begin{eqnarray*}
 \bs g{\bs w} & = & \begin{cases}
@@ -172,6 +188,29 @@ Convince yourself that if your step size rule is $\eta_{t}=1/\left(\lambda t\rig
 then doing SGD with the subgradient direction from the previous question
 is the same as given in the pseudocode. \\
 
+\subitem
+
+Let  $f=J_i(w)= g_i(w) + k_i(w)$, where $g_i(w) = \frac{1}{2}||w||^2$ and $k_i(w) = \max{ 0,1-y_{i}}$. Since the the derivative of $f$ is defined when $y_iw^Tx_i \neq 1$ we can calculate the subgradient for two cases, when $y_iw^Tx_i < 1$ and when $y_iw^Tx_i\leq1$.
+
+Using the property that the property of derivatives, that the derivative of a sum is the sum of a derivatives, therefore $\partial f_i(w)=\partial g_i(w)+\partial k_i(w)$. 
+
+In all cases, the subgradient for $g_i(w)$ is as follows: $\partial g_i(w) = \lambda w$.
+
+Where as for $k_i(w)$:
+$$
+    \begin{cases}
+    \partial k_i(w) = -y_ix_i & \text{when } y_iw^Tx_i < 1 \\
+    \partial k_i(w) = \text{ undefined } & \text{when } y_iw^Tx_i = 1 \\
+    \partial k_i(w) = 0 & \text{otherwise}
+    \end{cases}
+$$
+Therefore, the sub-gradients for $J_i(w)$ are as follows:
+\begin{eqnarray*}
+\bs g{\bs w} & = & \begin{cases}
+\lambda \bs w-y_{i}\bs x_{i} & \mbox{for }y_{i}\bs w^{T}\bs x_{i}<1\\
+\lambda \bs w & \mbox{for }y_{i}\bs w^{T}\bs x_{i}\ge1.
+\end{cases}
+\end{eqnarray*}
 
 \nyuparagrah{\bf Dataset and sparse representation} 
 
