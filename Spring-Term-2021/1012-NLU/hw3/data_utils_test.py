@@ -33,7 +33,7 @@ class TestDataUtils(unittest.TestCase):
         input_id, attention_mask = data_utils.encode_data(self.dataset,self.tokenizer,self.max_seq_len)
         self.assertTupleEqual(input_id.size(),(len(self.dataset),self.max_seq_len),'Input Id does Not have correct shape')
         self.assertTupleEqual(attention_mask.size(),(len(self.dataset),self.max_seq_len),'Attention Mask Not Correct shape')
-        self.assertTupleEqual(input_id.size(),attention_mask(),'Shape of Input, Attention Mask Inconsistent')
+        self.assertTupleEqual(input_id.size(),attention_mask.size(),'Shape of Input, Attention Mask Inconsistent')
         
         self.assertIsInstance(input_id, torch.LongTensor)
         self.assertIsInstance(attention_mask, torch.LongTensor)
