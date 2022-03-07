@@ -37,8 +37,8 @@ class TestDataUtils(unittest.TestCase):
     def test_extract_labels(self):
         ## TODO: Write a unit test that asserts that extract_labels() outputs the
         ## correct labels, e.g. [1, 0].
-        for i in range(len(self.labels)):
-            self.assertTrue(self.labels[i] in [0,1])
+        for i in range(len(self.dataset)):
+            self.assertTrue(self.dataset.loc[i,'label'] in [0,1])
 
 if __name__ == "__main__":
     unittest.main()
