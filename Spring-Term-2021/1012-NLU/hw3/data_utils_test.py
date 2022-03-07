@@ -30,12 +30,15 @@ class TestDataUtils(unittest.TestCase):
         ## output of encode_data() are correct.
         ## input_ids should have shape [len(self.dataset), self.max_seq_len] and type torch.long.
         ## attention_mask should have the same shape and type.
-        pass
+        self.assertTupleEqual(self.input_id.size(),(len(self.dataset),self.max_seq_len),'Input Id does Not have correct shape')
+        self.assertTupleEqual(self.attention_mask.size(),(len(self.dataset),self.max_seq_len),'Attention Mask Not Correct shape')
+        self.assertTupleEqual(self.input_id.size(),self.attention_mask(),'Shape of Input, Attention Mask Inconsistent')
 
     def test_extract_labels(self):
         ## TODO: Write a unit test that asserts that extract_labels() outputs the
         ## correct labels, e.g. [1, 0].
-        pass
+        for i in range(len(self.labels)):
+            self.assertTrue(self.labels[i] in [0,1])
 
 if __name__ == "__main__":
     unittest.main()

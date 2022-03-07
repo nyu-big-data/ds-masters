@@ -24,8 +24,15 @@ def encode_data(dataset, tokenizer, max_seq_length=128):
     ## TODO: Tokenize the questions and passages using both truncation and padding.
     ## Use the tokenizer provided in the argument and see the code comments above for
     ## more details.
-    pass
-
+    dataset['prompt'] = dataset['question'] + dataset['passage']
+    input_ids, attention_mask = tokenizer(text=dataset['prompt'],
+                          truncation=True,
+                          max_length=max_seq_length,
+                          padding='max_length',
+                          return_tensors='pt',
+                          return_attention_mask=True)
+    return input_ids, attention_mask
+                          
 
 def extract_labels(dataset):
     """Converts labels into numerical labels.
@@ -38,4 +45,4 @@ def extract_labels(dataset):
       where 0 is False and 1 is True.
   """
     ## TODO: Convert the labels to a numeric format and return as a list.
-    pass
+    return dataset['label'].astype(int).to_list()
