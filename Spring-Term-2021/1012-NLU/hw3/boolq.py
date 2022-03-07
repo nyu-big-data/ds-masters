@@ -20,9 +20,9 @@ class BoolQDataset(Dataset):
         """
         ## TODO: Use encode_data() from data_utils to store the input IDs and 
         ## attention masks for the data.
-        self.encoded_data = None
+        self.encoded_data = data_utils.encode_data(dataframe, tokenizer, max_seq_length)
         ## TODO: Use extract_labels() from data_utils to store the labels.
-        self.label_list = None
+        self.label_list = data_utils.extract_labels(dataframe)
 
     def __len__(self):
         return len(self.label_list)
@@ -37,4 +37,6 @@ class BoolQDataset(Dataset):
         ## TODO: Return the i-th example as a dictionary with the keys and values
         ## specified in the function docstring. You should be able to extract the
         ## necessary values from self.encoded_data and self.label_list.
-        pass
+        return {'input_ids':self.encoded_data[0][i],
+               'attention_mask':self.encoded_data[1][i],
+               'labels':self.label_list[i]}

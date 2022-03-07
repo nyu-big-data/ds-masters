@@ -24,14 +24,13 @@ def encode_data(dataset, tokenizer, max_seq_length=128):
     ## TODO: Tokenize the questions and passages using both truncation and padding.
     ## Use the tokenizer provided in the argument and see the code comments above for
     ## more details.
-    dataset['prompt'] = dataset['question'] + dataset['passage']
-    input_ids, attention_mask = tokenizer(text=dataset['prompt'],
-                          truncation=True,
+    input_dict = tokenizer([dataset['question'].to_list(),dataset['passage'].to_list()],truncation=True,
                           max_length=max_seq_length,
                           padding='max_length',
                           return_tensors='pt',
                           return_attention_mask=True)
-    return input_ids, attention_mask
+    
+    return input_dict['input_ids'], input_dict['attention_mask']
                           
 
 def extract_labels(dataset):

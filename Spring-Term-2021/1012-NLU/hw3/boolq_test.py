@@ -26,7 +26,7 @@ class TestBoolQDataset(unittest.TestCase):
     def test_len(self):
         ## TODO: Test that the length of self.boolq_dataset is correct.
         ## len(self.boolq_dataset) should equal len(self.dataset).
-        pass
+        self.assertTrue(len(self.boolq_dataset) == len(self.dataset))
 
     def test_item(self):
         ## TODO: Test that, for each element of self.boolq_dataset, 
@@ -36,7 +36,9 @@ class TestBoolQDataset(unittest.TestCase):
         ## The input_ids and attention_mask values should both have length self.max_seq_len
         ## and type torch.long. The labels value should be a single numeric value.
 
-        pass
+        for i in range(len(self.boolq_dataset)):
+            self.assertTrue(self.boolq_dataset[i].keys() == ["input_ids", "attention_mask", "labels"])
+            self.assertTrue()
 
 
 if __name__ == "__main__":
