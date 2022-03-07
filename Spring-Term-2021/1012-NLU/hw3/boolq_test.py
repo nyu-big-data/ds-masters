@@ -37,9 +37,19 @@ class TestBoolQDataset(unittest.TestCase):
         ## and type torch.long. The labels value should be a single numeric value.
 
         for i in range(len(self.boolq_dataset)):
+            #Make sure the keys are valid
             self.assertTrue(self.boolq_dataset[i].keys() == ["input_ids", "attention_mask", "labels"])
-            self.assertTrue()
+            
+            #Make sure the lengths are correct
+            self.assertTrue(len(self.boolq_dataset[i]['input_ids']) == self.max_seq_len)
+            self.assertTrue(len(self.boolq_dataset[i]['attention_mask']) == self.max_seq_len)
+            
+            #Make sure the are they right data type
+            self.assertIsInstance(self.boolq_dataset[i]['input_ids'], torch.LongTensor)
+            self.assertIsInstance(self.boolq_dataset[i]['attention_mask'], torch.LongTensor)
 
+            #Make sure the labels are in the correct integer format
+            self.assertTrue(len(self.boolq_dataset[i]['labels']) in [0,1])
 
 if __name__ == "__main__":
     unittest.main()
