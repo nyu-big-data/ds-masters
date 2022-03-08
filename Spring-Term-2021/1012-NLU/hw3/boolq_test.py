@@ -49,7 +49,7 @@ class TestBoolQDataset(unittest.TestCase):
             self.assertIsInstance(self.boolq_dataset[i]['attention_mask'], torch.LongTensor)
 
             #Make sure the labels are in the correct integer format
-            self.assertTrue(len(self.boolq_dataset[i]['labels']) in [0,1])
+            self.assertTrue(self.boolq_dataset[i]['labels'] in [0,1])
 
 if __name__ == "__main__":
     unittest.main()
