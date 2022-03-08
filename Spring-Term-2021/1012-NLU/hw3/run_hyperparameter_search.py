@@ -9,7 +9,7 @@ import data_utils
 import finetuning_utils
 import json
 import pandas as pd
-
+import transformers
 from sklearn.model_selection import train_test_split
 from transformers import RobertaTokenizerFast
 
@@ -40,8 +40,7 @@ test_data = boolq.BoolQDataset(test_df, tokenizer)
 ## TODO: Initialize a transformers.TrainingArguments object here for use in
 ## training and tuning the model. Consult the assignment handout for some
 ## sample hyperparameter values.
-train_args = transformers.TrainingArguemnts(
-    output_dir=args.output_dir,
+train_args = transformers.TrainingArguments(output_dir=args.output_dir,
     evaluation_strategy='epoch',
     save_strategy='epoch',
     label_names='labels')
