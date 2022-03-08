@@ -24,7 +24,7 @@ def encode_data(dataset, tokenizer, max_seq_length=128):
     ## TODO: Tokenize the questions and passages using both truncation and padding.
     ## Use the tokenizer provided in the argument and see the code comments above for
     ## more details.
-    input_dict = tokenizer([dataset['question'].to_list(),dataset['passage'].to_list()],truncation=True,
+    input_dict = tokenizer(tuple(dataset['question'].to_list(),dataset['passage'].to_list()),truncation=True,
                           max_length=max_seq_length,
                           padding='max_length',
                           return_tensors='pt',
