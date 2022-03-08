@@ -13,9 +13,9 @@ def compute_metrics(eval_pred):
     accuracy = accuracy_score(labels,preds)
     return {
         "accuracy": accuracy,
-        "f1", f1,
-        "precision", precision,
-        "recall", recall}
+        "f1": f1,
+        "precision": precision,
+        "recall": recall}
 
 def model_init():
     """Returns an initialized model for use in a Hugging Face Trainer."""
