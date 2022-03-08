@@ -40,7 +40,11 @@ test_data = boolq.BoolQDataset(test_df, tokenizer)
 ## TODO: Initialize a transformers.TrainingArguments object here for use in
 ## training and tuning the model. Consult the assignment handout for some
 ## sample hyperparameter values.
-
+train_args = transformers.TrainingArguemnts(
+    output_dir=args.output_dir,
+    evaluation_strategy='epoch',
+    save_strategy='epoch',
+    label_names='labels')
 ## TODO: Initialize a transformers.Trainer object and run a Bayesian
 ## hyperparameter search for at least 5 trials (but not too many) on the 
 ## learning rate. Hint: use the model_init() and
@@ -50,3 +54,21 @@ test_data = boolq.BoolQDataset(test_df, tokenizer)
 ## as its value.)
 ## Also print out the run ID, objective value,
 ## and hyperparameters of your best run.
+model = finetuning_utils.model_init()
+
+bayes_optimization = BayesOptSearch(
+    metric = 'eval_loss',
+    mode = 'min',
+    points_to_evaluate=initial_params)
+
+trainer = transformers.Trainer(
+    model_init=finetuning_utils.model_unit,
+    args=train_args,
+    tokenizer=tokenizer,
+    compute_metrics=finetuning_utils.compute_metrics,
+    train_dataset=train_data,
+    eval_dataset=val_data)
+
+trainer.hyperparameter_search(
+    n_trails=5,
+    backend=bayesopt)

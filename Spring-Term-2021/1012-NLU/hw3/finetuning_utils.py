@@ -9,10 +9,16 @@ def compute_metrics(eval_pred):
 
     ## TODO: Return a dictionary containing the accuracy, f1, precision, and recall scores.
     ## You may use sklearn's precision_recall_fscore_support and accuracy_score methods.
-    pass
+    precision, recall, f1, supp = precision_recall_fscore_support(labels,preds)
+    accuracy = accuracy_score(labels,preds)
+    return {
+        "accuracy": accuracy,
+        "f1", f1,
+        "precision", precision,
+        "recall", recall}
 
 def model_init():
     """Returns an initialized model for use in a Hugging Face Trainer."""
     ## TODO: Return a pretrained RoBERTa model for sequence classification.
     ## See https://huggingface.co/transformers/model_doc/roberta.html#robertaforsequenceclassification.
-    pass
+    return RobertaForSequenceClassification.from_pretrained("roberta-base")

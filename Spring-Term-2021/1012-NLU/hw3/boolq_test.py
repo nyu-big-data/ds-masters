@@ -38,7 +38,7 @@ class TestBoolQDataset(unittest.TestCase):
 
         for i in range(len(self.boolq_dataset)):
             #Make sure the keys are valid
-            self.assertTrue(self.boolq_dataset[i].keys() == ["input_ids", "attention_mask", "labels"])
+            self.assertTrue(list(self.boolq_dataset[i].keys()) == ["input_ids", "attention_mask", "labels"])
             
             #Make sure the lengths are correct
             self.assertTrue(len(self.boolq_dataset[i]['input_ids']) == self.max_seq_len)
