@@ -40,7 +40,7 @@ test_data = boolq.BoolQDataset(test_df, tokenizer)
 ## TODO: Initialize a transformers.TrainingArguments object here for use in
 ## training and tuning the model. Consult the assignment handout for some
 ## sample hyperparameter values.
-train_args = transformers.TrainingArguments(output_dir=args.output_dir,
+train_args = transformers.TrainingArguments(output_dir='/scratch/gjd9961/ds-masters/Spring-Term-2021/1012-NLU/hw3',
     evaluation_strategy='epoch',
     save_strategy='epoch',
     label_names='labels')
@@ -53,7 +53,7 @@ train_args = transformers.TrainingArguments(output_dir=args.output_dir,
 ## as its value.)
 ## Also print out the run ID, objective value,
 ## and hyperparameters of your best run.
-model = finetuning_utils.model_init()
+# model = finetuning_utils.model_init()
 
 bayes_optimization = BayesOptSearch(
     metric = 'eval_loss',
@@ -61,7 +61,7 @@ bayes_optimization = BayesOptSearch(
     points_to_evaluate=initial_params)
 
 trainer = transformers.Trainer(
-    model_init=finetuning_utils.model_unit,
+    model=finetuning_utils.model_init,
     args=train_args,
     tokenizer=tokenizer,
     compute_metrics=finetuning_utils.compute_metrics,
