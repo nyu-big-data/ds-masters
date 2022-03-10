@@ -81,5 +81,5 @@ trainer = transformers.Trainer(
 trainer.hyperparameter_search(
     hp_space=hp_space,
     backend='ray',
-    n_trails=1,
+    n_trials=1,
     search_alg=bayes_optimization)
