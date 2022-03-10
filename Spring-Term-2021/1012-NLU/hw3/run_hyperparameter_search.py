@@ -63,8 +63,6 @@ train_args = transformers.TrainingArguments(output_dir='/scratch/gjd9961/ds-mast
 ## Also print out the run ID, objective value,
 ## and hyperparameters of your best run.
 
-model = finetuning_utils.model_init()
-
 bayes_optimization = BayesOptSearch(
     metric = 'eval_loss',
     mode = 'min')
