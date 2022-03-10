@@ -12,6 +12,8 @@ import pandas as pd
 import transformers
 from sklearn.model_selection import train_test_split
 from transformers import RobertaTokenizerFast
+from ray import tune
+from ray.tune.suggest.bayesopt import BayesOptSearch
 
 parser = argparse.ArgumentParser(
     description="Run a hyperparameter search for finetuning a RoBERTa model on the BoolQ dataset."
@@ -55,10 +57,10 @@ train_args = transformers.TrainingArguments(output_dir='/scratch/gjd9961/ds-mast
 ## and hyperparameters of your best run.
 # model = finetuning_utils.model_init()
 
-bayes_optimization = BayesOptSearch(
-    metric = 'eval_loss',
-    mode = 'min',
-    points_to_evaluate=initial_params)
+# bayes_optimization = BayesOptSearch(
+#     metric = 'eval_loss',
+#     mode = 'min',
+#     points_to_evaluate=initial_params)
 
 trainer = transformers.Trainer(
     model=finetuning_utils.model_init,
@@ -69,5 +71,5 @@ trainer = transformers.Trainer(
     eval_dataset=val_data)
 
 trainer.hyperparameter_search(
-    n_trails=5,
-    backend=bayesopt)
+    n_trails=3,
+    search_alg=BayesOptSearch(metric = 'eval_loss', mode='min',points_to_evaluate=initial_params))
