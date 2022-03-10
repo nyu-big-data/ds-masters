@@ -79,7 +79,7 @@ trainer = transformers.Trainer(
     eval_dataset=val_data)
 
 trainer.hyperparameter_search(
-    hp_space=hp_space(None),
+    hp_space=hp_space,
     backend='ray',
     n_trails=1,
     search_alg=bayes_optimization)
