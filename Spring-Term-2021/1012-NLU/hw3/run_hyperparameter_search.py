@@ -12,6 +12,7 @@ import pandas as pd
 import transformers
 from sklearn.model_selection import train_test_split
 from transformers import RobertaTokenizerFast
+from transformers import RobertaForSequenceClassification
 from ray import tune
 from ray.tune.suggest.bayesopt import BayesOptSearch
 
