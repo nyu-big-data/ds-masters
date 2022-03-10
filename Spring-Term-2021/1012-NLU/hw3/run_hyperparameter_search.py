@@ -43,9 +43,15 @@ test_data = boolq.BoolQDataset(test_df, tokenizer)
 ## training and tuning the model. Consult the assignment handout for some
 ## sample hyperparameter values.
 train_args = transformers.TrainingArguments(output_dir='/scratch/gjd9961/ds-masters/Spring-Term-2021/1012-NLU/hw3',
-    evaluation_strategy='epoch',
+    evaluation_strategy='steps',
     save_strategy='epoch',
-    label_names='labels')
+    eval_steps=1,
+    logging_first_step=True,
+    learning_rate=1e-5,
+    per_device_train_batch_size=8,
+    num_train_epochs=3,
+    disable_tqdm=True,
+    weight_decay=0.01)
 ## TODO: Initialize a transformers.Trainer object and run a Bayesian
 ## hyperparameter search for at least 5 trials (but not too many) on the 
 ## learning rate. Hint: use the model_init() and
@@ -57,13 +63,12 @@ train_args = transformers.TrainingArguments(output_dir='/scratch/gjd9961/ds-mast
 ## and hyperparameters of your best run.
 # model = finetuning_utils.model_init()
 
-# bayes_optimization = BayesOptSearch(
-#     metric = 'eval_loss',
-#     mode = 'min',
-#     points_to_evaluate=initial_params)
+bayes_optimization = BayesOptSearch(
+    metric = 'eval_loss',
+    mode = 'min')
 
 trainer = transformers.Trainer(
-    model=finetuning_utils.model_init,
+    model_init=finetuning_utils.model_init,
     args=train_args,
     tokenizer=tokenizer,
     compute_metrics=finetuning_utils.compute_metrics,
@@ -71,5 +76,7 @@ trainer = transformers.Trainer(
     eval_dataset=val_data)
 
 trainer.hyperparameter_search(
-    n_trails=3,
-    search_alg=BayesOptSearch(metric = 'eval_loss', mode='min',points_to_evaluate=initial_params))
+    hp_space=hp_space,
+    backend='ray',
+    n_trails=1,
+    search_alg=bayes_optimization)
