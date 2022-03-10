@@ -46,7 +46,7 @@ test_data = boolq.BoolQDataset(test_df, tokenizer)
 train_args = transformers.TrainingArguments(output_dir='/scratch/gjd9961/ds-masters/Spring-Term-2021/1012-NLU/hw3',
     evaluation_strategy='steps',
     save_strategy='epoch',
-    eval_steps=1,
+    eval_steps=250,
     logging_first_step=True,
     learning_rate=1e-5,
     per_device_train_batch_size=8,
@@ -63,6 +63,9 @@ train_args = transformers.TrainingArguments(output_dir='/scratch/gjd9961/ds-mast
 ## Also print out the run ID, objective value,
 ## and hyperparameters of your best run.
 
+def hp_space(trial):
+    return {"learning_rate": tune.uniform(1e-5,5e-5)}
+
 bayes_optimization = BayesOptSearch(
     metric = 'eval_loss',
     mode = 'min')
@@ -76,7 +79,7 @@ trainer = transformers.Trainer(
     eval_dataset=val_data)
 
 trainer.hyperparameter_search(
-    hp_space=hp_space,
+    hp_space=hp_space(),
     backend='ray',
     n_trails=1,
     search_alg=bayes_optimization)
