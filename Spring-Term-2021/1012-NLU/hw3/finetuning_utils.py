@@ -1,4 +1,6 @@
 
+from transformers import RobertaTokenizerFast
+from transformers import RobertaForSequenceClassification
 
 def compute_metrics(eval_pred):
     """Computes accuracy, f1, precision, and recall from a 
