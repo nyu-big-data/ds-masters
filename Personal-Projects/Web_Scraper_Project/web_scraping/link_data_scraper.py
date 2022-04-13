@@ -40,48 +40,48 @@ class LinkDataScraper():
         #time.sleep(.5)                                 #See if this stops it from limiting our traffic
         
 
-    #Method to Grab Telephone Number
+    #Method to Scrape Telephone Number
     def get_telephone_number(self):
         try:
             return str(self.driver.find_element_by_class_name("contact-info").find_element_by_css_selector('a').get_attribute('href'))[4:]
         except:
             return "No Telephone Number"
 
-    #Method to Grab Telephone Number
+    #Method to Scrape Telephone Number
     def get_name(self):
         try:
             return self.clean(self.driver.find_element_by_css_selector("h3").text)
         except:
             return "No Name"
-    #Method to Grab Email Address
+    #Method to Scrape Email Address
     def get_email_address(self):
         try:
             return str(self.driver.find_element_by_class_name("mailto").get_attribute('href'))[7:]
         except:
             return "No Email Address"
 
-    #Method to Company Name
+    #Method to Scrape Company Name
     def get_company_name(self):
         try:
             return self.clean(self.driver.find_element_by_class_name("office-name").text)
         except:
             return "No Company Name"
 
-    #Method to Company Name
+    #Method to Scrape Company Name
     def get_office_address(self):
         try:
             return self.clean(self.driver.find_element_by_class_name("office-address").text)
         except:
             return "No Company Address"
     
-    #Method to Grab Caire Number
+    #Method to Scrape Caire Number
     def get_caire_number(self):
         try:
            return self.driver.find_element_by_class_name("contact-info").find_element_by_css_selector("p").text[9:]
         except:
             return "No Caire Number"
 
-    #Method to Grab Caire Number
+    #Method to Scrape Caire Number
     def get_specialty(self):
         try:
            return self.clean(self.driver.find_element_by_class_name("subtitle").find_element_by_css_selector('p').text)
