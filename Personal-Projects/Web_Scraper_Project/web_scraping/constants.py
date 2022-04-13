@@ -1,0 +1,1 @@
+SCRAPE_URL = 'https://www.cbcworldwide.com/professionals/find?locationName=Los+Angeles+County,+CA&locationId=CCALOSANGELES'
