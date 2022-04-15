@@ -2,13 +2,14 @@ from web_scraping.scraper import Scraper
 
 #Define main function to execute
 def main():
-    cols = [    'Name','Email Address',
+    cols = ['Name','Email Address',
                 'Telephone Number','Office Address',
                 'Company Name','Email Address',
-                'Caire Number','Specialty'
-            ]
+                'Caire Number','Specialty']
+    
     #Use our Scraper as bot, exit window when complete
     with Scraper(teardown=True, cols=cols) as bot:
+        print("launching")
         bot.launch_browser()                            #Launch bot
         bot.get_links()                                 #Get links
         bot.scrape_data()                               #Iterate through links - this will scrape the necessary information
