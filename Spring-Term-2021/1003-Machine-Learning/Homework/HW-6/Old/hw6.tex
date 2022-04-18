@@ -196,9 +196,30 @@ where $m=yf(x)$ is the margin.
   \setcounter{enumi}{\value{saveenum}}
   
 \item Give the expression of the negative gradient step direction, or pseudo residual, $-{\bf g}_{m}$ for the logistic loss as a function of the prediction function $f_{m-1}$ at the previous iteration and the dataset points $\{(x_i, y_i)\}_{i=1}^n$. What is the dimension of $g_{m}$?\\
+\subitem
+The dimension of $g_{m}$ is $Dim(g_{m}) = n$, (aka: $g_m \in \R^n$) since there are $n$ preditions corresponding to data points.
+Setting up our gradient as:
+$$
+    -g_{m_{i}} = \ell(y_i,f_{m-1}(x_i))
+$$
+ Where $m$ is the variable which we differentiate with respect to, and $i$ is the $i^{th}$ entry of $-g_m$. The $i^{th}$ entry in the negative gradient step direction is given by the following:
+$$
+    -g_{m_{i}} = \frac{\partial \ell(m)}{\partial m} = \frac{y_i \times - e^{-y_i f_{m-1}(x_i)}}{1 + e^{-y_i f_{m-1}(x_i)}} = \frac{1}{1 + e^{y_i f_{m-1}(x_i)}}
+$$
+We showed what the negative gradient is for the $i^{th}$ entry, here's the full thing:  $$-g_m = (\frac{1}{1 + e^{y_i f_{m-1}(x_i)}}, \dots, \frac{1}{1 + e^{y_n f_{m-1}(x_n)}})$$
+
 
 \item Write an expression for $h_{m}$ as an argmin over functions $h$ in $\cf$.\\
 
+\subitem
+We need to minimize the following expression:
+$$
+    h_m = \argmin_{h \in H} \sum_{i=1}^n \left[-g_i -  h_i(x_i)\right] ^2
+$$
+Substitutign our identity we found in problem 7 for $-g_i$, we can write the expression for the argmin of $h_{m}$ as follows:
+$$
+    h_m = \argmin_{h \in H} \sum_{i=1}^n \left[\frac{y_i}{1+e^{-y_if_{m-1}(x_i)}} -  h_i(x_i)\right] ^2
+$$
   
 \item Load the MNIST dataset using the helper preprocessing function in the skeleton code.Using the scikit learn implementation of \texttt{GradientBoostingClassifier}, with the logistic loss (\texttt{loss=`deviance'}) and trees of maximum depth 3, fit the data with 2, 5, 10, 100 and 200 iterations (estimators). Plot the train and test accurary as a function of the number of estimators.\\
 
@@ -211,11 +232,54 @@ where $m=yf(x)$ is the margin.
   \setcounter{enumi}{\value{saveenum}}
 \item Another type of ensembling method we discussed in class are random forests. Explain in your own words the construction principle of random forests.\\
 
+\subitem
+Random forests is an ensemble method in which many trees are built and then used to create a final decision tree.
+
+To build random forests we take advantage of ensemble methods and bootstrapping.
+
+Ensemble methods are ML methods which combine many weak models into one powerful model. In our case, this means combining many trees (low bias, high variance) into a single tree that hopefully achieves lower variance, and higher accuracy on test set performance.
+
+
+Bootstrapping is a method in which we re-sample our data with replacement to simulate taking additional independent samples of a true underlying distribution from which we have attained our training data. Independence here is a strong word, as the bootstrapped samples are independent of the training data, but not the underlying distribution, $P_{\mathcal{X}\times \mathcal{Y}}$.
+
+The benefit of this, is that when we achieve some sample statistic $\theta$, it is an unbiased estimator of the $\theta$ of the true underlying distribution. However, it also has some variance, $\sigma^2$, so to try to decrease the variance of our estimator, $\theta$, we use bootstrapping which decreases the variance to $\frac{\sigma^2}{n}$, while not changing the expectation of our sample statistic.
+
+\textbf{Our procedure to build a random forest is as follows:}
+
+\begin{itemize}
+    \item Simulate data by using resampling methods like Bootstrapping.
+    \item Train many decision trees on separate portions of the simulated data (this can be done in parallel!). We restrict our choice of splitting variable to a randomly chosen subset of features of size $m$. This hopefully avoids the situation in which smaller trees are dominated by highly correlated features that explain most of the variance. A good size for $m$ is $m = \sqrt{p}$, where $p$ is the number of features.
+    \item Combine the output of our random forest model (the many trees we just created), by averaging the decision criteria or taking majority vote (the method you will use will depend on what prediction task you are trying to accomplish).
+\end{itemize}
+
+
+
 \item Using the scikit learn implementation of \texttt{RandomForestClassifier}\footnote{\url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html\#sklearn.ensemble.RandomForestClassifier}},
 with the entropy loss (\texttt{criterion=`entropy'}) and trees of maximum depth 3, fit the preprocessed binary MNIST dataset with 2, 5, 10, 50, 100 and 200 estimators.\\
 
+\newpage
+
 \item What general remark can you make on overfitting for Random Forests and Gradient Boosted Trees? Which method achieves the best train accuracy overall? Is this result expected? 
 Can you think of a practical disadvantage of the best performing method? How do the algorithms compare in term of test accuracy? \\
+\subitem
+
+\textbf{Model Results:}
+
+Both models are prone to overfitting, with Gradient Boosted Trees overfittitng slightly more than the Random Forest model. 
+
+In the experiments we ran as part of the homework, both methods achieved very high test accuracy at $99.99\%$. However, Gradient Boosting Methods achieved $100\%$ training accuracy, meaning it was more prone to overfitting, than Random Forest, which approach $99.98\%$ (though that margin is razor thin). 
+
+This result is expected, as Gradient Boost continues to find functions that explain the variance of the residuals, and Random Forest can continually improve its performance as more estimators are added. That being said, for the dataset we used in the homework, the Random Forest model approached its highest test accuracy much quicker than Gradient Boosted Trees. 
+
+\textbf{Disadvantages:}
+
+The fact that the Random Forest task can be computed in parallel is incredibly valuable. Gradient Boosted Trees have additional hyper-parameters like learning rate, hypothesis space, that must be tuned to work optimally, which can be a disadvantage. They also cannot be computed in parallel, and require a lot of CPU power. 
+
+For Random forest, you must choose how many features to include in each tree, which is another hyper-parameter you must tune (though $m=\sqrt{p}$ is used in practice mostly. 
+
+Both methods can suffer in interpretability, and the significance of each variable can be hard to gauge. Both models are also prone to overfitting.
+
+
 \setcounter{saveenum}{\value{enumi}}
 \end{enumerate}
 
